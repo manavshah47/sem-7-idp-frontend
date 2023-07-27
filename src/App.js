@@ -22,10 +22,15 @@ function App() {
   const [signIn, toggle] = useState(true);
   const [ number, setNumber ] = useState("")
 
+  const [message, setMessage] = useState("")
+  const [showOTP, setShowOTP] = useState(false)
+
   const openPage = () => {
     toggle(!signIn)
     setNumber("")
   }
+
+
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -33,7 +38,11 @@ function App() {
 
       console.log("num: ", number)
       const response = await axios.post("http://localhost:3001/api/member/send-otp", {phone:number}, { headers: {"Content-Type":"application/json"}})
-      console.log(response.data)
+      if(response.data.success){
+        setShowOTP(true)
+      } else {
+        setMessage(response.data.message)
+      }
     } catch (error) {
       console.log(error)
     }
@@ -65,6 +74,7 @@ function App() {
                     <div style={{ padding: '20px 10px' }}> 
                     <Components.Input type='text' placeholder='Mobile Number' value={number} onChange={(e) => setNumber(e.target.value)}  />
                     </div>
+                    {message ? <p>{message}</p> : null}
                     <Components.Button onClick={handleSubmit}>Get OTP</Components.Button>
 
                     
