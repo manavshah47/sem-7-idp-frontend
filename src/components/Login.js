@@ -13,11 +13,17 @@ import axios from 'axios'
 
 // home component for all type of user
 
+import { logInUser } from "../actions/session";
+
 const mapStateToProps = ({ session }) => ({
   session
 });
 
-function Login({ session }) {
+const mapDispatchToProps = dispatch => ({
+  login: user => dispatch(logInUser(user))
+})
+
+function Login({ login, session }) {
   const [signIn, toggle] = useState(true);
   const [ number, setNumber ] = useState("")
   const [otp, setOtp] = useState("")
@@ -27,6 +33,8 @@ function Login({ session }) {
   const [email, setEmail] = useState("")
 
   const [showOTP, setShowOTP] = useState(false)
+
+  const [signUpOTP, setSignUpOTP] = useState(false)
 
   const openPage = () => {
     toggle(!signIn)
@@ -39,6 +47,7 @@ function Login({ session }) {
     console.log(response.data)
     if(response.data.success){
         toast(response.data.message)
+        setSignUpOTP(true)
     } else {
         toast(response.data.message)
     }
@@ -46,8 +55,14 @@ function Login({ session }) {
 
   const handleOtpSubmit = async (e) => {
     e.preventDefault()
-    const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/member/login`, {id:number,password:otp}, { headers: {"Content-Type":"application/json"}})
-    console.log(response.data)
+    const user = {
+      id:number,
+      password:otp
+    }
+    login(user)
+    // const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/member/login`, {id:number,password:otp}, { headers: {"Content-Type":"application/json"}})
+    // console.log(response.data)
+    // toast(response.data.message)
   }
 
 
@@ -72,16 +87,26 @@ function Login({ session }) {
       <div className="center">
        <Components.Container>
            <Components.SignUpContainer signinIn={signIn}>
-               <Components.Form>
-                   <Components.Title>Create Account</Components.Title>
-                   <Components.Input type='text' placeholder='First Name' value={firstName} onChange={(e) => setFirstName(e.target.value)} />
-                   <Components.Input type='text' placeholder='Last Name' value={lastName} onChange={(e) => setLastName(e.target.value)} />
-                   <Components.Input type='email' placeholder='Email' value={email} onChange={(e) => setEmail(e.target.value)} />
-                   <Components.Input type='text' placeholder='Mobile Number' value={number} onChange={(e) => setNumber(e.target.value)}  />
-                   <div style={{ padding: '20px 10px' }}>
-                   <Components.Button onClick={createMember} >Sign Up</Components.Button>
-                   </div>
-               </Components.Form>
+               {signUpOTP ?
+                <Components.Form>
+                  <Components.Title>Sign in</Components.Title>
+                  <div style={{ padding: '20px 10px' }}> 
+                  <Components.Input type='text' placeholder='Enter OTP' value={otp} onChange={(e) => setOtp(e.target.value)}  />
+                  </div>
+                  <Components.Button onClick={handleOtpSubmit}>Verify OTP</Components.Button>
+                </Components.Form>
+                :
+                <Components.Form>
+                    <Components.Title>Create Account</Components.Title>
+                    <Components.Input type='text' placeholder='First Name' value={firstName} onChange={(e) => setFirstName(e.target.value)} />
+                    <Components.Input type='text' placeholder='Last Name' value={lastName} onChange={(e) => setLastName(e.target.value)} />
+                    <Components.Input type='email' placeholder='Email' value={email} onChange={(e) => setEmail(e.target.value)} />
+                    <Components.Input type='text' placeholder='Mobile Number' value={number} onChange={(e) => setNumber(e.target.value)}  />
+                    <div style={{ padding: '20px 10px' }}>
+                    <Components.Button onClick={createMember} >Sign Up</Components.Button>
+                    </div>
+                </Components.Form>
+              }
            </Components.SignUpContainer>
 
            <Components.SignInContainer signinIn={signIn}>
@@ -143,5 +168,6 @@ function Login({ session }) {
 
 
 export default connect(
-  mapStateToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(Login);

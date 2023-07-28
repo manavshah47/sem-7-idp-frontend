@@ -10,8 +10,6 @@ import 'react-toastify/dist/ReactToastify.css';
 import { connect } from "react-redux";
 import './styles.css';
 
-import axios from 'axios'
-
 // home component for all type of user
 import Home from "./components/Home";
 import Login from "./components/Login";
@@ -21,14 +19,25 @@ const mapStateToProps = ({ session }) => ({
 });
 
 function App({ session }) {
-   return(
-    <>
+  if(session.typeOfUser == "member"){
+      return(
+      <>
+        <Routes>
+          <Route path="/" element={<Home/>} />
+        </Routes>
+        <ToastContainer />
+      </>
+      )
+  } else {
+    return(
+      <>
       <Routes>
-        <Route path="/login" element={<Login/>} />
+        <Route path="/" element={<Login/>} />
       </Routes>
       <ToastContainer />
     </>
    )
+  }
 }
 
 
