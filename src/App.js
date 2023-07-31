@@ -13,6 +13,7 @@ import './styles.css';
 // home component for all type of user
 import Home from "./components/Home";
 import Login from "./components/Login";
+import Navbar from "./components/Navbar";
 
 const mapStateToProps = ({ session }) => ({
   session
@@ -22,8 +23,9 @@ function App({ session }) {
   if(session.typeOfUser == "member"){
       return(
       <>
+      <Navbar/>
         <Routes>
-          <Route path="/" element={<Home/>} />
+          {/* <Route path="/" element={<Home/>} /> */}
         </Routes>
         <ToastContainer />
       </>
