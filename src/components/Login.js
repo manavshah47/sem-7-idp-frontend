@@ -148,7 +148,7 @@ function Login({ login, session }) {
                    <Components.RightOverlayPanel signinIn={signIn}>
                      <Components.Title>Hello!</Components.Title>
                      <Components.Paragraph>
-                         Enter Your personal details and start journey with us
+                         Wanna be a Member of our Association? Please Sign-Up!
                      </Components.Paragraph>
                          <Components.GhostButton onClick={openPage}>
                              Sign Up
