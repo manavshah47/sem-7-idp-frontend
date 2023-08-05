@@ -30,6 +30,7 @@ function App({ session }) {
       <Navbar/>
         <Routes>
           {/* <Route path="/" element={<Home/>} /> */}
+          { <Route path="/" element={<CompanyForm/>} /> }
         </Routes>
         <ToastContainer />
       </>

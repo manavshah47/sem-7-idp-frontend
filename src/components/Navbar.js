@@ -1,18 +1,50 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../Navbar.css";
 
-const Navbar = () => {
-  const li = [
+import { connect } from "react-redux";
+
+const mapStateToProps = ({ session }) => ({
+  session
+})
+
+const Navbar = ({session}) => {
+  const [li, setLi] = useState([]);
+
+  const memberLi = [
     ["Dashboard", "images/dashboard.svg"],
     ["Profile", "images/profile.svg"],
     ["Membership Form", "images/member.svg"],
-    ["Magazine", "images/Magazine.svg"],
-    ["Log Out", "images/btn2.png"],
+    ["Member", "images/Magazine.svg"],
+    ["Log Out", "images/btn2.png"]
   ];
+
+  const adminLi = [
+  ["Dashboard", "images/dashboard.svg"],
+  ["Membership Zone", "images/Magazine.svg"],
+  ["Control Pane", "images/member.svg"],
+  ["Log Out", "images/btn2.png"]];
+
+  const approverLi = [
+  ["Dashboard", "images/dashboard.svg"],
+  ["Membership Zone", "images/Magazine.svg"],
+  ["Control Pane", "images/member.svg"],
+  ["Log Out", "images/btn2.png"]];
+
+
+  useEffect(() => {
+    if(session.typeOfUser === "member"){
+      setLi(memberLi)
+    } else if(session.typeOfUser === "admin"){
+      setLi(adminLi)
+    }else{
+      setLi(approverLi)
+    }
+  }, [])
 
   const window = true;
   const [showTooltip, setShowTooltip] = useState(null);
 
+  console.log("session: ", session)
   const handleMouseEnter = (index) => {
     setShowTooltip(index);
   };
@@ -62,4 +94,6 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default connect(
+  mapStateToProps
+)(Navbar);
