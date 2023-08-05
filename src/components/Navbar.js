@@ -7,7 +7,7 @@ const Navbar = () => {
     ["Profile", "images/profile.svg"],
     ["Membership Form", "images/member.svg"],
     ["Magazine", "images/Magazine.svg"],
-    ["Log Out", "images/btn2.png"],
+    ["Log Out", "images/btn2.png"], // Added "Log Out" here
   ];
 
   const window = true;
