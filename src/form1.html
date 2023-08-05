@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+  <title>Company Information Form</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+      width: 500px;
+    }
+
+    .form-group label {
+      width: 200px;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+
+    .form-group input {
+      padding: 10px;
+      border: 1px solid #ccc;
+      background-color: #eeeeee;
+      border-color: #0f3c69;
+      color: #0f3c69; 
+    }
+
+    .form-footer {
+      display: flex;
+      justify-content:space-between;
+    }
+
+    .form-group input[type="submit"]{
+      background-color:  #0f3c69;
+      color: #fff;
+      cursor: pointer;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      font-weight: bold;
+      border-radius: 20px;
+      position: fixed;
+      left: 58%;
+    }
+    .form-group input[type="button"]{
+      width: 30%;
+      background-color:  #0f3c69;
+      color: #fff;
+      cursor: pointer;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      font-weight: bold;
+      border-radius: 20px;
+
+    }
+        
+    .form-heading {
+      text-align: center;
+      margin-bottom: 20px;      
+      text-transform: uppercase;
+    }
+
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <form>
+      <div class="form-heading">
+        <h2>Company Details </h2>
+      </div>
+      <div class="form-group">
+        <label for="companyName" >Company Name: <span style="color: red;">*</span></label>
+        <input type="text" id="companyName" name="companyName" required>
+      </div>
+      <div class="form-group">
+        <label for="ownerName">Owner Name: <span style="color: red;">*</span></label>
+        <input type="text" id="ownerName" name="ownerName" required>
+      </div>
+      <div class="form-group">
+        <label for="companyTelephone">Company Telephone: <span style="color: red;">*</span></label>
+        <input type="tel" id="companyTelephone" name="companyTelephone" required>
+      </div>
+      <div class="form-group">
+        <label for="companyPhone">Company Mobile No.: <span style="color: red;">*</span></label>
+        <input type="tel" id="companyPhone" name="companyPhone" required>
+      </div>
+      <div class="form-group">
+        <label for="companyEmail">Company Email: <span style="color: red;">*</span></label>
+        <input type="email" id="companyEmail" name="companyEmail" required>
+      </div>
+      <div class="form-group">
+        <label for="companyBranch">Company Branch(if any): </label>
+        <input type="text" id="companyBranch" name="companyBranch">
+      </div>
+      <div class="form-group">
+        <label for="companyFactory">Company Factory(if any): </label>
+        <input type="text" id="companyFactory" name="companyFactory">
+      </div>
+      <div class="form-group">
+        <label for="companyAddress">Company Address: <span style="color: red;">*</span></label>
+        <input type="text" id="companyAddress" name="companyAddress" required>
+      </div>
+      <div class="form-group">
+        <input type="button" value="Previous Page">
+        <input type="submit" value="Submit & Next">
+      </div>
+    </form>
+  </div>
+</body>
+</html>

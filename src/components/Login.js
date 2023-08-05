@@ -14,6 +14,7 @@ import axios from 'axios'
 // home component for all type of user
 
 import { logInUser } from "../actions/session";
+import { Header } from "./Header";
 
 const mapStateToProps = ({ session }) => ({
   session
@@ -83,7 +84,8 @@ function Login({ login, session }) {
 
 
    return(
-        <>
+     <>
+     
       <div className="center">
        <Components.Container>
            <Components.SignUpContainer signinIn={signIn}>
