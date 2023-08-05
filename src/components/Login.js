@@ -86,7 +86,7 @@ function Login({ login, session }) {
    return(
      <>
      
-      <div className="center">
+      <div className="center" style={{marginTop:'20px'}}>
        <Components.Container>
            <Components.SignUpContainer signinIn={signIn}>
                {signUpOTP ?

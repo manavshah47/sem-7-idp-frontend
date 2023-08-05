@@ -1,21 +1,22 @@
-.company-form{
-    justify-items: flex-start;
-}
-input {
-    color : #0f3c69;
-    
-    
-}
-.company-form{
+.form3{
     box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
     border: #0f3c69;
     border: solid 1px;
     border-radius: 1rem;
-    margin-top: 20px;
-  }
- 
+    /* margin-top: 15rem; */
+    color:black;
+    background-color: white;
+    
+}
+input {
+    color : #0f3c69;
+   
+}
+    
 .savebtn{
+    background-color:#0f3c69 ;
     border: solid #0f3c69;
     border-radius:20px;
     padding: 7px;
-}  
+    color: white;
+}     
