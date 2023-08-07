@@ -13,9 +13,9 @@ const Navbar = ({session}) => {
   const memberLi = [
     ["Dashboard", "images/dashboard.svg"],
     ["Profile", "images/profile.svg"],
+    ["Member", "images/Magazine.svg"],
     ["Membership Form", "images/member.svg"],
-    ["Log Out", "images/btn2.png"],
-    ["Member", "images/Magazine.svg"]
+    ["Log Out", "images/btn2.png"]
   ];
 
   const adminLi = [[]];

@@ -15,6 +15,7 @@ import axios from 'axios'
 
 import { logInUser } from "../actions/session";
 import { Header } from "./Header";
+import { Link } from "react-router-dom";
 
 const mapStateToProps = ({ session }) => ({
   session
@@ -86,7 +87,7 @@ function Login({ login, session }) {
    return(
      <>
      
-      <div className="center">
+      <div className="main-container">
        <Components.Container>
            <Components.SignUpContainer signinIn={signIn}>
                {signUpOTP ?
@@ -130,6 +131,7 @@ function Login({ login, session }) {
                     <Components.Input type='text' placeholder='Mobile Number' value={number} onChange={(e) => setNumber(e.target.value)}  />
                     </div>
                     <Components.Button onClick={handleSubmit}>Get OTP</Components.Button>
+                    <Link to="/login" className="font-blue text-right absolute bottom-0"><u className="font-blue"> Employee Login </u></Link>
                 </Components.Form>
               }
            </Components.SignInContainer>
@@ -153,7 +155,7 @@ function Login({ login, session }) {
                          Wanna be a Member of our Association? Please Sign-Up!
                      </Components.Paragraph>
                          <Components.GhostButton onClick={openPage}>
-                             Sign Up
+                              Sign Up
                          </Components.GhostButton> 
                    </Components.RightOverlayPanel>
 

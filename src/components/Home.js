@@ -15,11 +15,10 @@ const mapDispatchToProps = dispatch => ({
 const Home = ({session, logout}) => {
   console.log("home: " , session)
   return (
-    <div>
+    <div className='main-container'>
       <p style={{color:"red"}}>phone: {session.phone}</p>
-      <p style={{color:"red"}}>firstName: {session.firstName}</p>
-      <p style={{color:"red"}}>lastName: {session.lastName}</p>
-      <p style={{color:"red"}}>email: {session.email}</p>
+      <p style={{color:"red"}}>firstName: {(session.firstName, " " ,session.lastName)|| session.name}</p>
+      <p style={{color:"red"}}>email: {session.email || session.emailId}</p>
       <p style={{color:"red"}}>typeOfUser: {session.typeOfUser}</p>
       <button onClick={logout} style={{color:'red', backgroundColor:'purple', padding:'15px 20px', margin:"20px"}} > Logout </button>
     </div>
