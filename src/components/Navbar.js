@@ -27,7 +27,7 @@ const Navbar = ({session}) => {
   const approverLi = [
   ["Dashboard", "images/dashboard.svg"],
   ["Membership Zone", "images/Magazine.svg"],
-  ["Control Pane", "images/member.svg"],
+  ["Control Panel", "images/member.svg"],
   ["Log Out", "images/btn2.png"]];
 
 

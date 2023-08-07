@@ -26,7 +26,7 @@ function App({ session }) {
   if(session.typeOfUser == "member"){
       return(
       <>
-      <Header/>
+      {/* <Header/> */}
       <Navbar/>
         <Routes>
           {/* <Route path="/" element={<Home/>} /> */}
@@ -38,7 +38,9 @@ function App({ session }) {
   } else {
     return(
       <>
-      <Header/>
+      <div className="backImage">
+{/* <Header/> */}
+<Navbar/>
       <Routes>
         <Route path="/" element={<Login/>} />
         <Route path="/companyform" element={<CompanyForm/>} />
@@ -46,6 +48,8 @@ function App({ session }) {
         <Route path="/companyform3" element={<CompanyForm3/>} />
       </Routes>
       <ToastContainer />
+      </div>
+      
     </>
    )
   }

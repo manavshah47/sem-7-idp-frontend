@@ -69,54 +69,88 @@ const CompanyForm = () => {
     
 
     return (
+        <div className="flex" style={{justifyContent:'center', alignItems:'center', paddingTop:"100px"}}>
         <center>
             <form className="company-form" onSubmit={handleSubmit} style={{color:'black', backgroundColor:'white'}}>
-            <h1 style={{margin:10, padding:5}}>Company Form 1</h1>    
-            <div className='section1' style={{ display: 'flex', flexDirection: 'row' }}>
-                <div className="form-group" style={{margin:10}}>
-                    <label style={{marginInline:'1rem'}}>Company Name:</label>
-                    <input type="text" name="companyName" value={formData.companyName} onChange={handleChange} required style={{backgroundColor:'#eee'}} />
+            <h1 style={{margin:10, padding:30}} className='form-heading' >A. Company Details</h1>    
+            <div style={{ display: 'flex', flexDirection: 'row' ,paddingLeft:'10px', paddingRight:'50px'}}>
+                <div className="form-group flex width-50" >
+                    <div className='width-50' style={{marginLeft:'50px'}}>
+                        <p className='label' style={{textAlign:'start'}}>Company Name:</p>
+                    </div>
+                    <div className='width-50' style={{marginLeft:'10px'}}>
+                        <input type="text" name="companyName" value={formData.companyName} onChange={handleChange} required style={{backgroundColor:'#eee'}} />   
+                    </div>
                 </div>
-                <div className="form-group"  style={{margin:10}}>
-                    <label style={{marginInline:'1.6rem'}}>Company Address:</label>
-                    <input type="text" name="companyAddress" value={formData.companyAddress} onChange={handleChange} required style={{marginInlineEnd:15 , backgroundColor:'#eee'}} />
-                </div>
-            </div>
-            <div style={{ display: 'flex', flexDirection: 'row' }}>
-                <div className="form-group"  style={{margin:10}}>
-                    <label style={{marginInline:'1.7rem'}}>Owner Name:</label>
-                    <input type="text" name="ownerName" value={formData.ownerName} onChange={handleChange} required style={{backgroundColor:'#eee'}}/>
-                </div>
-                <div className="form-group"  style={{margin:10}}>
-                    <label style={{marginInline:'1rem'}}>Company Telephone:</label>
-                    <input type="tel" name="companyTelephone" value={formData.companyTelephone} onChange={handleChange} style={{backgroundColor:'#eee'}}/>
+                <div className="form-group flex width-50" >
+                    <div className='width-50' style={{marginLeft:'45px'}}>
+                        <p className='label' style={{textAlign:'start'}}>Company Address:</p>
+                    </div>
+                    <div className='width-50' style={{marginLeft:'10px'}}>
+                        <input type="text" name="companyAddress" value={formData.companyAddress} onChange={handleChange} required style={{backgroundColor:'#eee'}} />
+                    </div>
                 </div>
             </div>
-            <div style={{ display: 'flex', flexDirection: 'row' }}>
-                <div className="form-group"  style={{margin:10}}>
-                    <label style={{marginInline:'0.85rem'}}>Company Phone:</label>
-                    <input type="tel" name="companyPhone" value={formData.companyPhone} onChange={handleChange} style={{backgroundColor:'#eee'}}/>
+            <div style={{ display: 'flex', flexDirection: 'row' ,paddingLeft:'10px', paddingRight:'50px'}}>
+                <div className="form-group flex width-50">
+                    <div className='width-50' style={{marginLeft:'50px'}}>
+                        <p className='label' style={{textAlign:'start'}}>Owner Name:</p>
+                    </div>
+                    <div className='width-50' style={{marginLeft:'10px'}}>
+                        <input type="text" name="ownerName" value={formData.ownerName} onChange={handleChange} required style={{backgroundColor:'#eee'}}/>   
+                    </div>
                 </div>
-                <div className="form-group"  style={{margin:10}}>
-                    <label style={{marginInline:'2.2rem'}}>Company Email:</label>
-                    <input type="email" name="companyEmail" value={formData.companyEmail} onChange={handleChange} required style={{backgroundColor:'#eee'}}/>
-                </div>
-            </div>
-            <div style={{ display: 'flex', flexDirection: 'row' }}>
-                <div className="form-group"  style={{margin:10}}>
-                    <label style={{marginInline:'0.7rem'}}>Company Branch:</label>
-                    <input type="text" name="companyBranch" value={formData.companyBranch} onChange={handleChange} style={{backgroundColor:'#eee'}}/>
-                </div>
-                <div className="form-group"  style={{margin:10}}>
-                    <label style={{marginInline:'1.7rem'}}>Company Factory:</label>
-                    <input type="text" name="companyFactory" value={formData.companyFactory} onChange={handleChange} style={{backgroundColor:'#eee'}}/>
+                <div className="form-group flex width-50">
+                    <div className='width-50' style={{marginLeft:'45px'}}>
+                        <p className='label' style={{textAlign:'start'}}>Company Telephone:</p>
+                    </div>
+                    <div className='width-50' style={{marginLeft:'10px'}}>
+                        <input type="tel" name="companyTelephone" value={formData.companyTelephone} onChange={handleChange} style={{backgroundColor:'#eee'}}/>
+                    </div>
                 </div>
             </div>
-            <div style={{padding:20}}>
+            <div style={{ display: 'flex', flexDirection: 'row' ,paddingLeft:'10px', paddingRight:'50px'}}>
+            <div className="form-group flex width-50">
+                    <div className='width-50' style={{marginLeft:'50px'}}>
+                        <p className='label' style={{textAlign:'start'}}>Company Phone:</p>
+                    </div>
+                    <div className='width-50' style={{marginLeft:'10px'}}>
+                        <input type="tel" name="companyPhone" value={formData.companyPhone} onChange={handleChange} style={{backgroundColor:'#eee'}}/>   
+                    </div>
+                </div>
+                <div className="form-group flex width-50">
+                    <div className='width-50' style={{marginLeft:'45px'}}>
+                        <p className='label' style={{textAlign:'start'}}>Company Email:</p>
+                    </div>
+                    <div className='width-50' style={{marginLeft:'10px'}}>
+                        <input type="email" name="companyEmail" value={formData.companyEmail} onChange={handleChange} required style={{backgroundColor:'#eee'}}/>
+                    </div>
+                </div>
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'row' ,paddingLeft:'10px', paddingRight:'50px'}}>
+                <div className="form-group flex width-50">
+                    <div className='width-50' style={{marginLeft:'50px'}}>
+                        <p className='label' style={{textAlign:'start'}}>Company Branch:</p>
+                    </div>
+                    <div className='width-50' style={{marginLeft:'10px'}}>
+                        <input type="text" name="companyBranch" value={formData.companyBranch} onChange={handleChange} style={{backgroundColor:'#eee'}}/>   
+                    </div>
+                </div>
+                <div className="form-group flex width-50">
+                    <div className='width-50' style={{marginLeft:'45px'}}>
+                        <p className='label' style={{textAlign:'start'}}>Company Factory:</p>
+                    </div>
+                    <div className='width-50' style={{marginLeft:'10px'}}>
+                        <input type="text" name="companyFactory" value={formData.companyFactory} onChange={handleChange} style={{backgroundColor:'#eee'}}/>
+                    </div>
+                </div>
+            </div>
+            <div style={{paddingBottom:20, paddingTop:30, marginInlineStart: '50em' }}>
             <button type="submit" onClick={navigateCompanyform2} style={{borderColor:'#0f3c69', backgroundColor:'#0f3c69', color:'white' , borderRadius:20 , marginInline:5}}  className='savebtn'>Save & Next</button>
             </div>
         </form>
         </center>
+        </div>
     );
 };
 

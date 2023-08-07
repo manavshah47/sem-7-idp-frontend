@@ -24,7 +24,7 @@ body {
   flex-direction: column;
   font-family: "Montserrat", sans-serif;
   height: 100vh;
-  margin: -20px 0 50px;
+  /* margin: -20px 0 50px; */
 }
 
 .center {
@@ -46,8 +46,6 @@ body {
 input {
     color : #0f3c69
 }
-
-
 
 .navbar-menu {
   height:100vh;
@@ -93,4 +91,12 @@ input {
 .navbar__li-box:hover {
   border-left: 7px solid var(--borderLeftColor);
   cursor: pointer;
+}
+
+.backImage{
+  width: 100vw;
+  height: 100vh;
+  background-image: url('/public/images/formbk4.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
 }
