@@ -39,6 +39,10 @@ const CompanyForm = () => {
     };
 
     const handleSubmit = (e) => {
+
+          // 👇️ navigate to /
+          navigate('/companyform3');
+
         e.preventDefault();
         // You can handle form submission here, e.g., send data to a server or perform other actions.
         console.log('Form data:', formData);
@@ -52,7 +56,7 @@ const CompanyForm = () => {
         formDataToSend.append('otherNumber', formData.otherNumber);
 
         // Make the API call using Axios
-        axios.post('YOUR_API_ENDPOINT_URL', formDataToSend)
+        axios.post('http://localhost:3001/api/membership/company-info-2', formDataToSend)
             .then((response) => {
                 // Handle success response here if needed
                 console.log('API response:', response.data);
@@ -106,7 +110,7 @@ const CompanyForm = () => {
                         <button type="submit" onClick={navigatepreviouspage} className='savebtn' style={{ borderColor: '#0f3c69', backgroundColor: '#0f3c69', color: 'white', borderRadius: 20, marginInline: 5 }} >Previous Page</button>
                     </div>
                     <div style={{ padding: 20 }}>
-                        <button type="submit" className='savebtn' style={{ borderColor: '#0f3c69', backgroundColor: '#0f3c69', color: 'white', borderRadius: 20, marginInline: 5 }} >Save & Next</button>
+                        <button type="submit" className='savebtn' onClick={handleSubmit} style={{ borderColor: '#0f3c69', backgroundColor: '#0f3c69', color: 'white', borderRadius: 20, marginInline: 5 }} >Save & Next</button>
                     </div>
                 </div>
             </center>

@@ -18,13 +18,26 @@ const Navbar = ({session}) => {
     ["Log Out", "images/btn2.png"]
   ];
 
-  const adminLi = [[]];
+  const adminLi = [
+  ["Dashboard", "images/dashboard.svg"],
+  ["Membership Zone", "images/Magazine.svg"],
+  ["Control Pane", "images/member.svg"],
+  ["Log Out", "images/btn2.png"]];
+
+  const approverLi = [
+  ["Dashboard", "images/dashboard.svg"],
+  ["Membership Zone", "images/Magazine.svg"],
+  ["Control Pane", "images/member.svg"],
+  ["Log Out", "images/btn2.png"]];
+
 
   useEffect(() => {
-    if(session.typeOfUser == "member"){
+    if(session.typeOfUser === "member"){
       setLi(memberLi)
-    } else if(session.typeOfUser == "admin"){
+    } else if(session.typeOfUser === "admin"){
       setLi(adminLi)
+    }else{
+      setLi(approverLi)
     }
   }, [])
 

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate} from 'react-router-dom';
 import '../companyform.css'; // Import the CSS file for styling
-
+import axios from 'axios'; // Import Axios
 const CompanyForm = () => {
     const [formData, setFormData] = useState({
         companyName: '',
@@ -61,6 +61,10 @@ const CompanyForm = () => {
           // You can handle form submission here, e.g., send data to a server or perform other actions.
           console.log('Form data:', formData);
         }
+
+        
+
+          
       };
     
 

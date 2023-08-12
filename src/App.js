@@ -16,8 +16,10 @@ import Login from "./components/Login";
 import Navbar from "./components/Navbar";
 import CompanyForm from "./components/CompanyForm";
 import CompanyForm2 from "./components/CompanyForm2";
-import { Header } from "./components/Header";
+import Header from "./components/Header";
 import CompanyLogin from "./components/CompanyLogin";
+import CompanyForm3 from "./components/CompanyForm3";
+
 const mapStateToProps = ({ session }) => ({
   session
 });
@@ -26,11 +28,13 @@ function App({ session }) {
   if(session.typeOfUser == "member"){
       return(
       <>
+      <Header/>
       <Navbar/>
         <Routes>
           <Route path="/home" element={<Home/>} />
           <Route path="/companyform" element={<CompanyForm/>} />
           <Route path="/companyform2" element={<CompanyForm2/>} />
+          <Route path="/companyform3" element={<CompanyForm3/>} />
         </Routes>
       <ToastContainer />
       </>
@@ -38,6 +42,7 @@ function App({ session }) {
   } else if(session.typeOfUser == "admin"){
     return(
       <>
+        <Header/>
         <Navbar/>
         <Routes>
           <Route path="/home" element={<Home/>} />
@@ -48,6 +53,7 @@ function App({ session }) {
   } else {
     return(
       <>
+      <Header/>
       <Routes>
         <Route path="/login" element={<CompanyLogin/>} />
         <Route path="/*" element={<Login/>} />
