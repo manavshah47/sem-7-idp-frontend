@@ -60,10 +60,14 @@ const Navbar = ({session}) => {
     setShowTooltip(null);
   };
 
+  const openHome = () => {
+    navigate("/")
+  }
+
   return (
     <nav className="navbar-menu" style={{ width: window ? 60 : 250 }}>
       <div className="burger">
-        <img src="images/title_logo.png" alt="burger" />
+        <img src="images/title_logo.png" onClick={openHome} alt="burger" />
       </div>
       <ul className="navbar__list">
         {li.map((item, i) => (

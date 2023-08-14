@@ -107,7 +107,7 @@ const CompanyForm3 = ({session}) => {
         e.preventDefault();
         
         if(!isDataUpdated){
-            navigate("/member-info")
+            navigate("/membership-status")
             return;
         }
         
