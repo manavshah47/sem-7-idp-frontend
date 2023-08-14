@@ -1,18 +1,26 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import '../companyform3.css'
 import { useNavigate } from 'react-router-dom';
-const CompanyForm3 = () => {
+import { toast } from 'react-toastify';
+
+import { connect } from 'react-redux'; 
+
+const mapStateToProps = ({ session }) => ({
+    session
+})
+
+const CompanyForm3 = ({session}) => {
+    const [isDataUpdated, setIsDataUpdated] = useState(false)
+
     const [formData, setFormData] = useState({
-        companyResearchArea: '',
         productName: '',
         productUnit: '',
         productCapacity: '',
         companyERDAObjective: '',
-        companyERDARequiredServices: '',
-        typeOfMembership: '',
-        companyTurnOverRange: '',
-        companyTurnOver: '',
+        companyERDARequiredServices: [],
+        typeOfMembership: 'Associate',
+        companyTurnOverRange: 'upto 5 cr',
         turnoverBalanceSheet: null,
     });
 
@@ -22,10 +30,40 @@ const CompanyForm3 = () => {
 
     const navigatepreviouspage = () => {
         // 👇️ navigate to /
-        navigate('/companyform2');
+        navigate('/company-info-2');
     };
 
+    const preLoadData = async () => {
+        try {
+            const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/membership/membership/${session.memberId}`)
+
+            console.log(response.data)
+
+            if(response.data.success){
+                let temp = response.data.data
+                setFormData({
+                    productName: temp?.companyProducts[0]?.productName,
+                    productUnit: temp?.companyProducts[0]?.productUnit,
+                    productCapacity: temp?.companyProducts[0]?.productCapacity,
+                    companyERDAObjective: temp.companyERDAObjective,
+                    companyERDARequiredServices: temp.companyERDARequiredServices,
+                    typeOfMembership: temp.typeOfMembership,
+                    companyTurnOverRange: temp.companyTurnOverRange
+                })
+
+            }
+
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    useEffect(() => {
+        preLoadData();
+    }, [])
+
     const handleChange = (e) => {
+        setIsDataUpdated(true)
         const { name, value, type } = e.target;
 
         // Handle file inputs (for PDF upload)
@@ -35,6 +73,19 @@ const CompanyForm3 = () => {
                 ...prevData,
                 [name]: file,
             }));
+        } else if (type == "checkbox") {
+            let arr = formData.companyERDARequiredServices
+            if(arr.includes(value)){
+                arr = arr.filter(data => data != value)
+            } else {
+                arr = [...arr, value]
+            }
+
+            setFormData((prevData) => ({
+                ...prevData,
+                [name]: arr,
+            }));
+
         } else {
             setFormData((prevData) => ({
                 ...prevData,
@@ -52,120 +103,174 @@ const CompanyForm3 = () => {
         return Object.keys(newErrors).length === 0;
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
+        
+        if(!isDataUpdated){
+            navigate("/member-info")
+            return;
+        }
+        
         const isValid = validateForm();
+        
+        let { productName, productCapacity, productUnit, companyERDARequiredServices, ...other } = formData
+        
+        let companyProducts = JSON.stringify([{
+            productName:productName,
+            productUnit:productUnit,
+            productCapacity:productCapacity
+        }])
+
+        companyERDARequiredServices = JSON.stringify(companyERDARequiredServices)
 
         if (isValid) {
-            // Create a FormData object to send the file to the server
-            const formDataToSend = new FormData();
-            formDataToSend.append('companyResearchArea', formData.companyResearchArea);
-            formDataToSend.append('productName', formData.productName);
-            formDataToSend.append('productUnit', formData.productUnit);
-            formDataToSend.append('productCapacity', formData.productCapacity);
-            formDataToSend.append('companyERDAObjective', formData.companyERDAObjective);
-            formDataToSend.append('companyERDARequiredServices', formData.companyERDARequiredServices);
-            formDataToSend.append('typeOfMembership', formData.typeOfMembership);
-            formDataToSend.append('companyTurnOverRange', formData.companyTurnOverRange);
-            formDataToSend.append('companyTurnOver', formData.companyTurnOver);
-            formDataToSend.append('turnoverBalanceSheet', formData.turnoverBalanceSheet);
+            const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/membership/company-info-3`, { ...other, companyProducts, companyERDARequiredServices }, {headers:{"Content-Type":"multipart/form-data"}})
+            toast(response.data.message)
 
-            // Make the API call using Axios
-            axios.post('YOUR_API_ENDPOINT_URL', formDataToSend)
-                .then((response) => {
-                    // Handle success response here if needed
-                    console.log('API response:', response.data);
-                })
-                .catch((error) => {
-                    // Handle error response here if needed
-                    console.error('API error:', error);
-                });
+            if(response.data.success){
+                navigate("/membership-status")
+            }
         }
     };
 
     return (
-        <center style={{marginTop:'20px'}}>
-
-            <form className='form3' style={{marginTop:'9rem'}}>
-                <h1 style={{ margin: 10, padding: 5 }}>Company Form 3</h1>
-
-            <div style={{display:'flex' , flexDirection:'row'}}>
-            <div style={{margin:10}}>
-                    <label  style={{marginInline:'1rem', marginInlineEnd:'1.8rem'}}>Company Research Area:</label>
-                    <input style={{backgroundColor:'#eee'}} type="text" name="companyResearchArea" value={formData.companyResearchArea} onChange={handleChange} required />
-                    {errors.companyResearchArea && <span className="error">{errors.companyResearchArea}</span>}
+        <div className="flex" style={{justifyContent:'center', alignItems:'center', paddingTop:"100px"}}>
+        <center>
+            <form className="company-form" onSubmit={handleSubmit} style={{color:'black', backgroundColor:'white'}}>
+            <h1 style={{margin:10, paddingTop:30, paddingBottom:10}} className='form-heading' >C. Company Details</h1>    
+            <div style={{ display: 'flex', flexDirection: 'row' ,paddingLeft:'10px', paddingRight:'50px'}}>
+                <div className="form-group flex width-50" >
+                    <div className='width-50' style={{marginLeft:'50px'}}>
+                        <p className='label' style={{textAlign:'start'}}>Product Name:</p>
+                    </div>
+                    <div className='width-50' style={{marginLeft:'10px'}}>
+                        <input type="text" name="productName" style={{backgroundColor:'#eee'}} value={formData.productName} onChange={handleChange} required />   
+                        {errors.productName && <span className="error">{errors.productName}</span>}
+                    </div>
                 </div>
-                <div style={{margin:10}}>
-                    <label style={{marginInline:'1rem', marginInlineEnd:'3rem'}}>Product Name:</label>
-                    <input type="text" name="productName" style={{backgroundColor:'#eee'}} value={formData.productName} onChange={handleChange} required />
-                    {errors.productName && <span className="error">{errors.productName}</span>}
+                <div className="form-group flex width-50" >
+                    <div className='width-50' style={{marginLeft:'45px'}}>
+                        <p className='label' style={{textAlign:'start'}}>Unit Manufactured:</p>
+                    </div>
+                    <div className='width-50' style={{marginLeft:'10px'}}>
+                        <input type="number" name="productUnit" style={{backgroundColor:'#eee'}} value={formData.productUnit} onChange={handleChange} required />
+                        {errors.productUnit && <span className="error">{errors.productUnit}</span>}
+                    </div>
                 </div>
             </div>
-
-
-                <div style={{display:'flex' , flexDirection:'row'}}>
-                <div style={{margin:10}}>
-                    <label style={{marginInline:'1rem', marginInlineEnd:'7.6rem'}}>Product Unit:</label>
-                    <input type="text" name="productUnit" style={{backgroundColor:'#eee'}} value={formData.productUnit} onChange={handleChange} required />
-                    {errors.productUnit && <span className="error">{errors.productUnit}</span>}
+            <div style={{ display: 'flex', flexDirection: 'row' ,paddingLeft:'10px', paddingRight:'50px'}}>
+                <div className="form-group flex width-50" >
+                    <div className='width-50' style={{marginLeft:'50px'}}>
+                        <p className='label' style={{textAlign:'start'}}>Manufacturing Capacity:</p>
+                    </div>
+                    <div className='width-50' style={{marginLeft:'10px'}}>
+                        <input type="number" name="productCapacity" style={{backgroundColor:'#eee'}} value={formData.productCapacity} onChange={handleChange} required />
+                        {errors.productCapacity && <span className="error">{errors.productCapacity}</span>}
+                    </div>
                 </div>
-                <div style={{margin:10}}>
-                    <label style={{marginInline:'1rem' , marginInlineEnd:'1.8rem'}}>Product Capacity:</label>
-                    <input type="text" name="productCapacity" style={{backgroundColor:'#eee'}} value={formData.productCapacity} onChange={handleChange} required />
-                    {errors.productCapacity && <span className="error">{errors.productCapacity}</span>}
-                </div>
-                </div>
-
-
-                <div style={{display:'flex' , flexDirection:'row'}}>
-                    <div style={{margin:10}}>
-                        <label style={{marginInline:'1rem'}}>Company ERDA Objective:</label>
+                <div className="form-group flex width-50" >
+                    <div className='width-50' style={{marginLeft:'45px'}}>
+                        <p className='label' style={{textAlign:'start'}}>Objective For Membership:</p>
+                    </div>
+                    <div className='width-50' style={{marginLeft:'10px'}}>
                         <input type="text" name="companyERDAObjective" style={{backgroundColor:'#eee'}} value={formData.companyERDAObjective} onChange={handleChange} required />
                         {errors.companyERDAObjective && <span className="error">{errors.companyERDAObjective}</span>}
                     </div>
-                    <div style={{margin:10}}>
-                        <label style={{marginInline:'1rem', marginInlineEnd:'3rem'}}> ERDA Services:</label>
-                        <input type="text" name="companyERDARequiredServices" style={{backgroundColor:'#eee'}} value={formData.companyERDARequiredServices} onChange={handleChange} required />
+                </div>
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'row' ,paddingLeft:'10px', paddingRight:'10px', paddingTop:10}}>
+                <div className="form-group" >
+                <div style={{ display: 'flex', flexDirection: 'row'}}>
+                        <p className='label'style={{marginLeft:'50px', paddingTop:'10px'}}>ERDA Services:</p>                    
+                    
+                        <p className='label' style={{marginLeft:'45px', paddingTop:'5px'}}>
+                            <input type="checkbox" name="companyERDARequiredServices" value="Option 1" checked={formData.companyERDARequiredServices.includes("Option 1")} onChange={handleChange} style={{marginRight:'5px' }}/>Option 1
+                        </p>
+
+                        <p className='label' style={{marginLeft:'45px', paddingTop:'5px'}}>
+                            <input type="checkbox" name="companyERDARequiredServices" value="Option 2" checked={formData.companyERDARequiredServices.includes("Option 2")} onChange={handleChange} style={{marginRight:'5px'}}/>Option 2
+                        </p>
+
+                        <p className='label'style={{marginLeft:'45px', paddingTop:'5px'}}>
+                            <input type="checkbox" name="companyERDARequiredServices" value="Option 3" checked={formData.companyERDARequiredServices.includes("Option 3")} onChange={handleChange} style={{marginRight:'5px'}}/>Option 3
+                        </p>
+
+                        <p className='label'style={{marginLeft:'45px', paddingTop:'5px'}}>
+                            <input type="checkbox" name="companyERDARequiredServices" value="Option 4" checked={formData.companyERDARequiredServices.includes("Option 4")} onChange={handleChange} style={{marginRight:'5px'}}/>Option 4
+                        </p>
+                    
+                    </div>
                         {errors.companyERDARequiredServices && <span className="error">{errors.companyERDARequiredServices}</span>}
-                    </div>
-                </div >
-
-
-                <div style={{margin:10}}>
-                    <label style={{marginInline:'1rem', marginInlineStart:'-26rem',marginInlineEnd:'4rem'}}>Type of Membership:</label>
-                    <input type="text" name="typeOfMembership" value={formData.typeOfMembership} style={{backgroundColor:'#eee'}} onChange={handleChange} required />
-                    {errors.typeOfMembership && <span className="error">{errors.typeOfMembership}</span>}
                 </div>
+            </div>
 
+            <div style={{ display: 'flex', flexDirection: 'row' ,paddingLeft:'10px', paddingRight:'10px', paddingTop:10}}>
+                <div className="form-group" >
+                <div style={{ display: 'flex', flexDirection: 'row'}}>
+                        <p className='label'style={{marginLeft:'50px', paddingTop:'10px'}}>Type Of Membership:</p>                    
+                    
+                        <label className='label' style={{marginLeft:'45px', paddingTop:'5px'}}>
+                            <input type="radio" className='radio-button' name="typeOfMembership" value="Ordinary" checked={formData.typeOfMembership === "Ordinary"} onChange={handleChange} />Ordinary
+                        </label>
 
-                <div style={{ display: 'flex', flexDirection: 'row' }}>
-                    <div style={{margin:10}}>
-                        <label style={{marginInline:'1rem'}}>Company Turnover Range:</label>
-                        <input type="text" name="companyTurnOverRange" value={formData.companyTurnOverRange} style={{backgroundColor:'#eee'}} onChange={handleChange} required />
+                        <p className='label' style={{marginLeft:'45px', paddingTop:'5px'}}>
+                            <input type="radio" className='radio-button' name="typeOfMembership" value="Associate" checked={formData.typeOfMembership === "Associate"} onChange={handleChange}/>Associate
+                        </p>
+                    </div>
+                        {errors.typeOfMembership && <span className="error">{errors.typeOfMembership}</span>}
+                </div>
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'row' ,paddingLeft:'10px', paddingRight:'10px', paddingTop:10}}>
+                <div className="form-group" >
+                <div style={{ display: 'flex', flexDirection: 'row'}}>
+                        <p className='label'style={{marginLeft:'50px', paddingTop:'15px'}}>Company Turnover Range:</p>
+                    
+                        <p className='label' style={{marginLeft:'45px', paddingTop:'10px'}}>
+                            <input type="radio" className='radio-button' name="companyTurnOverRange" value="upto 5 cr" checked={formData.companyTurnOverRange.includes("upto 5 cr")} onChange={handleChange} style={{marginRight:'5px' }}/>Upto 5 Cr.
+                        </p>
+
+                        <p className='label' style={{marginLeft:'45px', paddingTop:'10px'}}>
+                            <input type="radio" className='radio-button' name="companyTurnOverRange" value="above 5 to 50 cr" checked={formData.companyTurnOverRange.includes("above 5 to 50 cr")} onChange={handleChange} style={{marginRight:'5px'}}/>Above 5 to 50 Cr.
+                        </p>
+
+                        <p className='label'style={{marginLeft:'45px', paddingTop:'10px'}}>
+                            <input type="radio" className='radio-button' name="companyTurnOverRange" value="above 50 cr" checked={formData.companyTurnOverRange.includes("above 50 cr")} onChange={handleChange} style={{marginRight:'5px'}}/>Above 50 Cr.
+                        </p>
+                    
+                    </div>
                         {errors.companyTurnOverRange && <span className="error">{errors.companyTurnOverRange}</span>}
+                </div>
+            </div>
+
+            <div style={{textAlign:'start' ,marginLeft:'60px', paddingTop:10}}>
+                <div className="form-group flex width-50" >
+                    <div className='width-50'>
+                        <p className='label'  style={{ marginRight: 20, textAlign:'start'}}>Turnover Sheet:</p>
                     </div>
-                    <div style={{margin:10}}>
-                        <label style={{marginInline:'1rem'}}>Company Turnover:</label>
-                        <input type="text" name="companyTurnOver" style={{backgroundColor:'#eee'}} value={formData.companyTurnOver} onChange={handleChange} required />
-                        {errors.companyTurnOver && <span className="error">{errors.companyTurnOver}</span>}
+                    <div className='width-50' style={{marginLeft:'10px'}}>
+                        <input type="file" name="file" onChange={handleChange} accept=".pdf" required style={{ backgroundColor: '#eee' }} />
+                        {errors.turnoverBalanceSheet && <span className="error">{errors.turnoverBalanceSheet}</span>}
                     </div>
                 </div>
-                <div style={{margin:10}}>
-                    <label style={{marginInline:'1rem',marginInlineStart:'-15rem'}}>Turnover Balance Sheet (PDF):</label>
-                    <input type="file" name="turnoverBalanceSheet" onChange={handleChange} style={{backgroundColor:'#eee'}} accept=".pdf" required />
-                    {errors.turnoverBalanceSheet && <span className="error">{errors.turnoverBalanceSheet}</span>}
-                </div>
+            </div>
+            <center>
                 <div style={{ display: 'flex', flexDirection: 'row' }}>
-                    <div style={{ padding: 20, marginInlineStart: '19em' }}>
+                    <div style={{ paddingLeft:30, paddingBottom:20, paddingTop:30}}>
                         <button type="submit" onClick={navigatepreviouspage} className='savebtn' style={{ borderColor: '#0f3c69', backgroundColor: '#0f3c69', color: 'white', borderRadius: 20, marginInline: 5 }} >Previous Page</button>
                     </div>
-                    <div style={{ padding: 20 }}>
+                    <div style={{ paddingLeft:20, paddingBottom:20, paddingTop:30, marginInlineStart: '40em'}}>
                         <button type="submit" className='savebtn' onClick={handleSubmit} style={{ borderColor: '#0f3c69', backgroundColor: '#0f3c69', color: 'white', borderRadius: 20, marginInline: 5 }} >Save & Next</button>
                     </div>
                 </div>
+            </center>
             </form>
         </center>
+        </div>
     );
 };
 
-export default CompanyForm3;
+export default connect(
+    mapStateToProps
+)(CompanyForm3);

@@ -62,9 +62,6 @@ function Login({ login, session }) {
       password:otp
     }
     login(user)
-    // const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/member/login`, {id:number,password:otp}, { headers: {"Content-Type":"application/json"}})
-    // console.log(response.data)
-    // toast(response.data.message)
   }
 
 
@@ -72,9 +69,9 @@ function Login({ login, session }) {
     e.preventDefault()
     try {
       const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/member/send-otp`, {phone:number}, { headers: {"Content-Type":"application/json"}})
-      console.log(response.data)
       if(response.data.success){
         setShowOTP(true)
+        toast(response.data.message)
       } else {
         toast(response.data.message, { position:'top-center' })
       }

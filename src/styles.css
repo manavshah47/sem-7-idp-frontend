@@ -41,7 +41,7 @@
   flex-direction: column;
   font-family: "Montserrat", sans-serif;
   height: 100vh;
-  margin: -20px 0 50px;
+  /* margin: -20px 0 50px; */
 }
 
 .center {
@@ -62,8 +62,6 @@
 input {
     color : #0f3c69
 }
-
-
 
 .navbar-menu {
   height:100vh;
@@ -114,4 +112,11 @@ input {
 .container {
   color: black;
   background-color: blue;
+}
+.backImage{
+  width: 100vw;
+  height: 100vh;
+  background-image: url('/public/images/formbk4.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
 }

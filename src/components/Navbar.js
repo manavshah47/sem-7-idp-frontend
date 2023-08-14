@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import "../Navbar.css";
 
+import { useNavigate } from "react-router";
+
 import { connect } from "react-redux";
 
 const mapStateToProps = ({ session }) => ({
@@ -10,11 +12,13 @@ const mapStateToProps = ({ session }) => ({
 const Navbar = ({session}) => {
   const [li, setLi] = useState([]);
 
+  const navigate = useNavigate()
+
   const memberLi = [
     ["Dashboard", "images/dashboard.svg"],
     ["Profile", "images/profile.svg"],
     ["Member", "images/Magazine.svg"],
-    ["Membership Form", "images/member.svg"],
+    ["Membership-Form", "images/member.svg"],
     ["Log Out", "images/btn2.png"]
   ];
 
@@ -27,7 +31,7 @@ const Navbar = ({session}) => {
   const approverLi = [
   ["Dashboard", "images/dashboard.svg"],
   ["Membership Zone", "images/Magazine.svg"],
-  ["Control Pane", "images/member.svg"],
+  ["Control Panel", "images/member.svg"],
   ["Log Out", "images/btn2.png"]];
 
 
@@ -44,10 +48,13 @@ const Navbar = ({session}) => {
   const window = true;
   const [showTooltip, setShowTooltip] = useState(null);
 
-  console.log("session: ", session)
   const handleMouseEnter = (index) => {
     setShowTooltip(index);
   };
+
+  const openPage = (index) => {
+    navigate(li[index][0].toLowerCase())
+  }
 
   const handleMouseLeave = () => {
     setShowTooltip(null);
@@ -65,6 +72,7 @@ const Navbar = ({session}) => {
             key={i}
             onMouseEnter={() => handleMouseEnter(i)}
             onMouseLeave={handleMouseLeave}
+            onClick={() => openPage(i)}
           >
             <img
               src={item[1]}
