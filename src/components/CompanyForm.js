@@ -70,30 +70,54 @@ const CompanyForm = ({ session }) => {
         let newErrors = {};
     
         if (!formData.companyName.trim()) {
-          newErrors.companyName = 'Company Name is required';
+            newErrors.companyName = 'Company Name is required';
         }
     
         if (!formData.companyAddress.trim()) {
-          newErrors.companyAddress = 'Company Address is required';
+            newErrors.companyAddress = 'Company Address is required';
         }
     
         if (!formData.ownerName.trim()) {
-          newErrors.ownerName = 'Owner Name is required';
+            newErrors.ownerName = 'Owner Name is required';
+        }
+    
+        if (!formData.companyTelephone.trim()) {
+            newErrors.companyTelephone = 'Company Telephone is required';
+        } else if (!/^\d{10}$/.test(formData.companyTelephone)) {
+            newErrors.companyTelephone = 'Company Telephone should have 10 digits';
+        }
+    
+        if (!formData.companyPhone.trim()) {
+            newErrors.companyPhone = 'Company Phone is required';
+        } else if (!/^\d{10}$/.test(formData.companyPhone)) {
+            newErrors.companyPhone = 'Company Phone should have 10 digits';
         }
     
         if (formData.companyEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.companyEmail)) {
-          newErrors.companyEmail = 'Invalid email address';
+            newErrors.companyEmail = 'Invalid email address';
+        }
+    
+        if (!formData.companyBranch.trim()) {
+            newErrors.companyBranch = 'Company Branch is required';
+        }
+    
+        if (!formData.companyFactory.trim()) {
+            newErrors.companyFactory = 'Company Factory is required';
         }
     
         setErrors(newErrors);
-        return Object.keys(newErrors).length === 0;
-      };
+        return newErrors;
+    };
+    
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        console.log('handleSubmit triggered');
+
         const isValid = validateForm();
 
         if(!isDataUpdated){
+            console.log('Navigating to /company-info-2');
             navigate("/company-info-2")
             return;
         }
@@ -125,7 +149,8 @@ const CompanyForm = ({ session }) => {
                         <p className='label' style={{textAlign:'start'}}>Company Name:</p>
                     </div>
                     <div className='width-50' style={{marginLeft:'10px'}}>
-                        <input type="text" name="companyName" value={formData.companyName} onChange={handleChange} required style={{backgroundColor:'#eee'}} />   
+                        <input type="text" name="companyName" value={formData.companyName} onChange={handleChange} required style={{backgroundColor:'#eee'}} />
+                        {errors.companyName && <p className="error-message">{errors.companyName}</p>}   
                     </div>
                 </div>
                 <div className="form-group flex width-50" >
@@ -134,6 +159,7 @@ const CompanyForm = ({ session }) => {
                     </div>
                     <div className='width-50' style={{marginLeft:'10px'}}>
                         <input type="text" name="companyAddress" value={formData.companyAddress} onChange={handleChange} required style={{backgroundColor:'#eee'}} />
+                        {errors.companyAddress && <p className="error-message">{errors.companyAddress}</p>}
                     </div>
                 </div>
             </div>
@@ -143,7 +169,8 @@ const CompanyForm = ({ session }) => {
                         <p className='label' style={{textAlign:'start'}}>Owner Name:</p>
                     </div>
                     <div className='width-50' style={{marginLeft:'10px'}}>
-                        <input type="text" name="ownerName" value={formData.ownerName} onChange={handleChange} required style={{backgroundColor:'#eee'}}/>   
+                        <input type="text" name="ownerName" value={formData.ownerName} onChange={handleChange} required style={{backgroundColor:'#eee'}}/>  
+                        {errors.ownerName && <p className="error-message">{errors.ownerName}</p>} 
                     </div>
                 </div>
                 <div className="form-group flex width-50">
@@ -152,6 +179,7 @@ const CompanyForm = ({ session }) => {
                     </div>
                     <div className='width-50' style={{marginLeft:'10px'}}>
                         <input type="tel" name="companyTelephone" value={formData.companyTelephone} onChange={handleChange} style={{backgroundColor:'#eee'}}/>
+                        {errors.companyTelephone && <p className="error-message">{errors.companyTelephone}</p>}
                     </div>
                 </div>
             </div>
@@ -161,7 +189,8 @@ const CompanyForm = ({ session }) => {
                         <p className='label' style={{textAlign:'start'}}>Company Phone:</p>
                     </div>
                     <div className='width-50' style={{marginLeft:'10px'}}>
-                        <input type="tel" name="companyPhone" value={formData.companyPhone} onChange={handleChange} style={{backgroundColor:'#eee'}}/>   
+                        <input type="tel" name="companyPhone" value={formData.companyPhone} onChange={handleChange} style={{backgroundColor:'#eee'}}/>
+                        {errors.companyPhone && <p className="error-message">{errors.companyPhone}</p>}   
                     </div>
                 </div>
                 <div className="form-group flex width-50">
@@ -170,6 +199,7 @@ const CompanyForm = ({ session }) => {
                     </div>
                     <div className='width-50' style={{marginLeft:'10px'}}>
                         <input type="email" name="companyEmail" value={formData.companyEmail} onChange={handleChange} required style={{backgroundColor:'#eee'}}/>
+                        {errors.companyEmail && <p className="error-message">{errors.companyEmail}</p>}
                     </div>
                 </div>
             </div>
@@ -180,6 +210,7 @@ const CompanyForm = ({ session }) => {
                     </div>
                     <div className='width-50' style={{marginLeft:'10px'}}>
                         <input type="text" name="companyBranch" value={formData.companyBranch} onChange={handleChange} style={{backgroundColor:'#eee'}}/>   
+                        {errors.companyBranch && <p className="error-message">{errors.companyBranch}</p>}
                     </div>
                 </div>
                 <div className="form-group flex width-50">
@@ -188,6 +219,7 @@ const CompanyForm = ({ session }) => {
                     </div>
                     <div className='width-50' style={{marginLeft:'10px'}}>
                         <input type="text" name="companyFactory" value={formData.companyFactory} onChange={handleChange} style={{backgroundColor:'#eee'}}/>
+                        {errors.companyFactory && <p className="error-message">{errors.companyFactory}</p>}
                     </div>
                 </div>
             </div>

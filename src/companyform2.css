@@ -16,7 +16,8 @@ input {
     border: solid #0f3c69;
     border-radius:20px;
     padding: 7px;
-}     
+} 
+    
 input::file-selector-button{
     background-color: #0f3c69 !important;
     color: wh;
