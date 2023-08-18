@@ -73,10 +73,10 @@ const CompanyForm3 = ({session}) => {
                 ...prevData,
                 [name]: file,
             }));
-        } else if (type == "checkbox") {
+        } else if (type === "checkbox") {
             let arr = formData.companyERDARequiredServices
             if(arr.includes(value)){
-                arr = arr.filter(data => data != value)
+                arr = arr.filter(data => data !== value)
             } else {
                 arr = [...arr, value]
             }
@@ -96,12 +96,52 @@ const CompanyForm3 = ({session}) => {
 
     const validateForm = () => {
         let newErrors = {};
-
+    
         // Add validation rules here if needed
-
+        if (!formData.productName) {
+            newErrors.productName = "Product Name is required";
+        }
+    
+        if (!formData.productUnit) {
+            newErrors.productUnit = "Unit Manufactured is required";
+        }
+    
+        if (!formData.productCapacity) {
+            newErrors.productCapacity = "Manufacturing Capacity is required";
+        }
+    
+        if (!formData.companyERDAObjective) {
+            newErrors.companyERDAObjective = "Objective For Membership is required";
+        }
+    
+        if (formData.companyERDARequiredServices.length === 0) {
+            newErrors.companyERDARequiredServices = "Select at least one ERDA Service";
+        }
+    
+        if (!formData.typeOfMembership) {
+            newErrors.typeOfMembership = "Select a Type of Membership";
+        }
+    
+        if (!formData.companyTurnOverRange) {
+            newErrors.companyTurnOverRange = "Select a Company Turnover Range";
+        }
+    
+        if (!formData.turnoverBalanceSheet) {
+            newErrors.turnoverBalanceSheet = "Turnover Sheet is required";
+        } else {
+            const allowedExtensions = ["pdf"];
+            const fileExtension = formData.turnoverBalanceSheet.name.split(".").pop().toLowerCase();
+        
+            if (!allowedExtensions.includes(fileExtension)) {
+                newErrors.turnoverBalanceSheet = "Please upload a PDF file";
+            }
+        }
+        
+    
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
+    
 
     const handleSubmit = async (e) => {
         e.preventDefault();
