@@ -46,7 +46,7 @@ const CompanyForm3 = ({session}) => {
                     productUnit: temp?.companyProducts[0]?.productUnit,
                     productCapacity: temp?.companyProducts[0]?.productCapacity,
                     companyERDAObjective: temp.companyERDAObjective,
-                    companyERDARequiredServices: temp.companyERDARequiredServices,
+                    companyERDARequiredServices: temp?.companyERDARequiredServices,
                     typeOfMembership: temp.typeOfMembership,
                     companyTurnOverRange: temp.companyTurnOverRange
                 })
@@ -75,7 +75,7 @@ const CompanyForm3 = ({session}) => {
             }));
         } else if (type == "checkbox") {
             let arr = formData.companyERDARequiredServices
-            if(arr.includes(value)){
+            if(arr?.includes(value)){
                 arr = arr.filter(data => data != value)
             } else {
                 arr = [...arr, value]
@@ -185,19 +185,19 @@ const CompanyForm3 = ({session}) => {
                         <p className='label'style={{marginLeft:'50px', paddingTop:'10px'}}>ERDA Services:</p>                    
                     
                         <p className='label' style={{marginLeft:'45px', paddingTop:'5px'}}>
-                            <input type="checkbox" name="companyERDARequiredServices" value="Option 1" checked={formData.companyERDARequiredServices.includes("Option 1")} onChange={handleChange} style={{marginRight:'5px' }}/>Option 1
+                            <input type="checkbox" name="companyERDARequiredServices" value="Option 1" checked={formData.companyERDARequiredServices?.includes("Option 1")} onChange={handleChange} style={{marginRight:'5px' }}/>Option 1
                         </p>
 
                         <p className='label' style={{marginLeft:'45px', paddingTop:'5px'}}>
-                            <input type="checkbox" name="companyERDARequiredServices" value="Option 2" checked={formData.companyERDARequiredServices.includes("Option 2")} onChange={handleChange} style={{marginRight:'5px'}}/>Option 2
+                            <input type="checkbox" name="companyERDARequiredServices" value="Option 2" checked={formData.companyERDARequiredServices?.includes("Option 2")} onChange={handleChange} style={{marginRight:'5px'}}/>Option 2
                         </p>
 
                         <p className='label'style={{marginLeft:'45px', paddingTop:'5px'}}>
-                            <input type="checkbox" name="companyERDARequiredServices" value="Option 3" checked={formData.companyERDARequiredServices.includes("Option 3")} onChange={handleChange} style={{marginRight:'5px'}}/>Option 3
+                            <input type="checkbox" name="companyERDARequiredServices" value="Option 3" checked={formData.companyERDARequiredServices?.includes("Option 3")} onChange={handleChange} style={{marginRight:'5px'}}/>Option 3
                         </p>
 
                         <p className='label'style={{marginLeft:'45px', paddingTop:'5px'}}>
-                            <input type="checkbox" name="companyERDARequiredServices" value="Option 4" checked={formData.companyERDARequiredServices.includes("Option 4")} onChange={handleChange} style={{marginRight:'5px'}}/>Option 4
+                            <input type="checkbox" name="companyERDARequiredServices" value="Option 4" checked={formData.companyERDARequiredServices?.includes("Option 4")} onChange={handleChange} style={{marginRight:'5px'}}/>Option 4
                         </p>
                     
                     </div>
@@ -228,15 +228,15 @@ const CompanyForm3 = ({session}) => {
                         <p className='label'style={{marginLeft:'50px', paddingTop:'15px'}}>Company Turnover Range:</p>
                     
                         <p className='label' style={{marginLeft:'45px', paddingTop:'10px'}}>
-                            <input type="radio" className='radio-button' name="companyTurnOverRange" value="upto 5 cr" checked={formData.companyTurnOverRange.includes("upto 5 cr")} onChange={handleChange} style={{marginRight:'5px' }}/>Upto 5 Cr.
+                            <input type="radio" className='radio-button' name="companyTurnOverRange" value="upto 5 cr" checked={formData.companyTurnOverRange?.includes("upto 5 cr")} onChange={handleChange} style={{marginRight:'5px' }}/>Upto 5 Cr.
                         </p>
 
                         <p className='label' style={{marginLeft:'45px', paddingTop:'10px'}}>
-                            <input type="radio" className='radio-button' name="companyTurnOverRange" value="above 5 to 50 cr" checked={formData.companyTurnOverRange.includes("above 5 to 50 cr")} onChange={handleChange} style={{marginRight:'5px'}}/>Above 5 to 50 Cr.
+                            <input type="radio" className='radio-button' name="companyTurnOverRange" value="above 5 to 50 cr" checked={formData.companyTurnOverRange?.includes("above 5 to 50 cr")} onChange={handleChange} style={{marginRight:'5px'}}/>Above 5 to 50 Cr.
                         </p>
 
                         <p className='label'style={{marginLeft:'45px', paddingTop:'10px'}}>
-                            <input type="radio" className='radio-button' name="companyTurnOverRange" value="above 50 cr" checked={formData.companyTurnOverRange.includes("above 50 cr")} onChange={handleChange} style={{marginRight:'5px'}}/>Above 50 Cr.
+                            <input type="radio" className='radio-button' name="companyTurnOverRange" value="above 50 cr" checked={formData.companyTurnOverRange?.includes("above 50 cr")} onChange={handleChange} style={{marginRight:'5px'}}/>Above 50 Cr.
                         </p>
                     
                     </div>
