@@ -58,7 +58,9 @@ const MembershipStatus = ({ session }) => {
             <p className='text-black'>Payment Status: {data.gstNumber}</p>
             <p className='text-black'>Payment Status: {data.cinNumber}</p>
             <p className='text-black'>Payment Status: {data?.companyRegistrationProofAttachment?.documentName}</p>
-            {data.companyRegistrationProofAttachment && <embed src={data.companyRegistrationProofAttachment.file} width="100%" height="100%" />}
+            <div style={{display:'flex', justifyContent:'center'}}>
+                {data.companyRegistrationProofAttachment && <embed src={data.companyRegistrationProofAttachment.file} width="1000px" height="1000px" />}
+            </div>
             <p>.</p>
             <p className='text-black'>Form 3</p>
             <p className='text-black'>Payment Status: {data.companyType}</p>
@@ -85,7 +87,9 @@ const MembershipStatus = ({ session }) => {
             </p>
 
             <p className='text-black'>Payment Status: {data.cinNumber}</p>
-            {data.turnOverBalanceSheet && <embed src={data.turnOverBalanceSheet} width="100%" height="100%" />}
+            <div style={{display:'flex', justifyContent:'center'}}>
+                {data.turnOverBalanceSheet && <embed src={data.turnOverBalanceSheet} width="1000px" height="1000px" />}
+            </div>
         </div>
     )
 }

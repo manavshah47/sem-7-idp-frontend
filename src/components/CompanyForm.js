@@ -106,7 +106,7 @@ const CompanyForm = ({ session }) => {
         }
     
         setErrors(newErrors);
-        return newErrors;
+        return Object.keys(newErrors).length === 0;
     };
     
 
