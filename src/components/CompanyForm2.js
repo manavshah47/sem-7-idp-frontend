@@ -16,7 +16,7 @@ const CompanyForm = ({session}) => {
     const [formData, setFormData] = useState({
         companyType: '',
         registrationYear: '',
-        registrationProof: null,
+        file: null,
         panNumber: '',
         cinNumber: '',
         gstNumber: '',
@@ -45,7 +45,8 @@ const CompanyForm = ({session}) => {
                     panNumber: temp.panNumber,
                     gstNumber: temp.gstNumber,
                     cinNumber: temp.cinNumber,
-                    registrationProofName: temp.companyRegistrationProofAttachment.documentName
+                    registrationProofName: temp.companyRegistrationProofAttachment.documentName,
+                    file: temp.companyRegistrationProofAttachment.file
                 })
             }
 
@@ -94,17 +95,15 @@ const CompanyForm = ({session}) => {
         //     newErrors.gstNumber = 'Invalid GST number format.';
         // }
         
-    
-        if (!formData.registrationProof) {
-            newErrors.registrationProof = 'Registration Proof is required';
+        if (!formData.file) {
+            newErrors.file = 'Registration Proof is required';
         } 
-        // else if (formData.registrationProof.type !== 'application/pdf') {
-        //     newErrors.registrationProof = 'File must be in PDF format.';
-        // }
-        
-    
+        else if (!(formData.file?.type == 'application/pdf' || formData.file.includes("https://idp-sem-7.s3.us-east-1.amazonaws.com"))) {
+            newErrors.file = 'File must be in PDF format.';
+        }
+
         setErrors(newErrors);
-        return newErrors;
+        return Object.keys(newErrors).length === 0
     };
     
     const handleChange = (e) => {
@@ -128,29 +127,30 @@ const CompanyForm = ({session}) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log('handleSubmit triggered');
 
+        const isValid = validateForm();
 
-        if(!isDataUpdated){
-            console.log('Navigating to /company-info-2');
+        console.log("validation: ", isValid)
+
+        if(!isDataUpdated && isValid){
+            // 'Navigating to /company-info-3 as data is not updated';
             navigate("/company-info-3")
             return;
         }
 
-        const isValid = validateForm();
         if (isValid) {
             // withCredentials to send httpOnly cookie via request
             axios.defaults.withCredentials = true;
 
-            const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/membership/company-info-2`, {...formData}, {headers:{"Content-Type":"application/json"}})
-
+            const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/membership/company-info-2`, {...formData}, {headers:{"Content-Type":"multipart/form-data"}})
+            console.log(response.data)
             if(response.data.success){
                 toast(response.data.message)
                 navigate('/company-info-3');
             } else {
                 toast(response.data.message)
             }
-        }        
+        }
     };
 
     return (
@@ -228,8 +228,8 @@ const CompanyForm = ({session}) => {
                         <p className='label'  style={{ marginRight: 20, textAlign:'start'}}>Registration Proof:</p>
                     </div>
                     <div className='width-50' style={{marginLeft:'0px'}}>
-                        <input type="file" name="file" onChange={handleChange} accept=".pdf" required style={{ backgroundColor: '#eee' }} />       
-                        {errors.registrationProof && <p className="error-message">{errors.registrationProof}</p>}
+                        <input type="file" name="file" onChange={handleChange} accept=".pdf" required style={{ backgroundColor: '#eee' }} />
+                        {errors.file && <p className="error-message">{errors.file}</p>}
                     </div>
                 </div>
             </div>

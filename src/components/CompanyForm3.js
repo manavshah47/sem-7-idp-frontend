@@ -19,9 +19,9 @@ const CompanyForm3 = ({session}) => {
         productCapacity: '',
         companyERDAObjective: '',
         companyERDARequiredServices: [],
-        typeOfMembership: 'Associate',
+        typeOfMembership: 'Ordinary',
         companyTurnOverRange: 'upto 5 cr',
-        turnoverBalanceSheet: null,
+        file: null,
     });
 
     const [errors, setErrors] = useState({});
@@ -48,7 +48,8 @@ const CompanyForm3 = ({session}) => {
                     companyERDAObjective: temp.companyERDAObjective,
                     companyERDARequiredServices: temp?.companyERDARequiredServices,
                     typeOfMembership: temp.typeOfMembership,
-                    companyTurnOverRange: temp.companyTurnOverRange
+                    companyTurnOverRange: temp.companyTurnOverRange,
+                    file: temp.turnOverBalanceSheet
                 })
 
             }
@@ -73,14 +74,13 @@ const CompanyForm3 = ({session}) => {
                 ...prevData,
                 [name]: file,
             }));
-        } else if (type == "checkbox") {
+        } else if (type === "checkbox") {
             let arr = formData.companyERDARequiredServices
-            if(arr?.includes(value)){
-                arr = arr.filter(data => data != value)
+            if(arr.includes(value)){
+                arr = arr.filter(data => data !== value)
             } else {
                 arr = [...arr, value]
             }
-
             setFormData((prevData) => ({
                 ...prevData,
                 [name]: arr,
@@ -96,22 +96,64 @@ const CompanyForm3 = ({session}) => {
 
     const validateForm = () => {
         let newErrors = {};
-
+    
         // Add validation rules here if needed
+        if (!formData.productName) {
+            newErrors.productName = "Product Name is required";
+        }
+    
+        if (!formData.productUnit) {
+            newErrors.productUnit = "Unit Manufactured is required";
+        }
+    
+        if (!formData.productCapacity) {
+            newErrors.productCapacity = "Manufacturing Capacity is required";
+        }
+    
+        if (!formData.companyERDAObjective) {
+            newErrors.companyERDAObjective = "Objective For Membership is required";
+        }
+    
+        if (formData.companyERDARequiredServices.length === 0) {
+            newErrors.companyERDARequiredServices = "Select at least one ERDA Service";
+        }
+    
+        if (!formData.typeOfMembership) {
+            newErrors.typeOfMembership = "Select a Type of Membership";
+        }
+    
+        if (!formData.companyTurnOverRange) {
+            newErrors.companyTurnOverRange = "Select a Company Turnover Range";
+        }
+
+        if (!formData.file) {
+            newErrors.file = 'Turn Over Sheet is required';
+        } 
+        else if (!(formData.file?.type == 'application/pdf' || formData.file.includes("https://idp-sem-7.s3.us-east-1.amazonaws.com"))) {
+            newErrors.file = 'File must be in PDF format.';
+        }
 
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
 
+    useEffect(() => {
+        console.log(errors)
+    }, [errors])
+    
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         
-        if(!isDataUpdated){
+        const isValid = validateForm();
+
+        if(!isDataUpdated && isValid){
+            // go to show data page as no data is updated and previous inserted data is correct
+            // no updation condition
             navigate("/membership-status")
             return;
         }
         
-        const isValid = validateForm();
         
         let { productName, productCapacity, productUnit, companyERDARequiredServices, ...other } = formData
         
@@ -124,6 +166,9 @@ const CompanyForm3 = ({session}) => {
         companyERDARequiredServices = JSON.stringify(companyERDARequiredServices)
 
         if (isValid) {
+
+            axios.defaults.withCredentials = true
+            
             const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/membership/company-info-3`, { ...other, companyProducts, companyERDARequiredServices }, {headers:{"Content-Type":"multipart/form-data"}})
             toast(response.data.message)
 
@@ -251,7 +296,7 @@ const CompanyForm3 = ({session}) => {
                     </div>
                     <div className='width-50' style={{marginLeft:'10px'}}>
                         <input type="file" name="file" onChange={handleChange} accept=".pdf" required style={{ backgroundColor: '#eee' }} />
-                        {errors.turnoverBalanceSheet && <span className="error">{errors.turnoverBalanceSheet}</span>}
+                        {errors.file && <span className="error">{errors.file}</span>}
                     </div>
                 </div>
             </div>

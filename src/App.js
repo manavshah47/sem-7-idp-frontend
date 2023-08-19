@@ -52,7 +52,7 @@ function App({ session }) {
         <Header/>
         <Navbar/>
         <Routes>
-          <Route path="/home" element={<Home/>} />
+          <Route path="/profile" element={<Home/>} />
         </Routes>
         <ToastContainer />
       </>
