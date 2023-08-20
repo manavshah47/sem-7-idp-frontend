@@ -101,13 +101,21 @@ const CompanyForm3 = ({session}) => {
         if (!formData.productName) {
             newErrors.productName = "Product Name is required";
         }
+        else if (formData.productName.trim().length < 5) {
+            newErrors.productName = 'Should be 5 characters long';
+        }
     
         if (!formData.productUnit) {
             newErrors.productUnit = "Unit Manufactured is required";
         }
+        else if (isNaN(formData.productUnit)) {
+            newErrors.productUnit = "Unit Manufactured must be a number";
+        }
     
         if (!formData.productCapacity) {
-            newErrors.productCapacity = "Manufacturing Capacity is required";
+            newErrors.productCapacity = "productCapacity is required";
+        }else if (isNaN(formData.productCapacity)) {
+            newErrors.productCapacity = "productCapacity must be a number";
         }
     
         if (!formData.companyERDAObjective) {
@@ -190,7 +198,7 @@ const CompanyForm3 = ({session}) => {
                     </div>
                     <div className='width-50' style={{marginLeft:'10px'}}>
                         <input type="text" name="productName" style={{backgroundColor:'#eee'}} value={formData.productName} onChange={handleChange} required />   
-                        {errors.productName && <span className="error">{errors.productName}</span>}
+                        {errors.productName && <span className="error" style={{color: 'red', fontSize: '12px'}}>{errors.productName}</span>}
                     </div>
                 </div>
                 <div className="form-group flex width-50" >
@@ -199,7 +207,7 @@ const CompanyForm3 = ({session}) => {
                     </div>
                     <div className='width-50' style={{marginLeft:'10px'}}>
                         <input type="number" name="productUnit" style={{backgroundColor:'#eee'}} value={formData.productUnit} onChange={handleChange} required />
-                        {errors.productUnit && <span className="error">{errors.productUnit}</span>}
+                        {errors.productUnit && <span className="error"style={{color: 'red', fontSize: '12px'}}>{errors.productUnit}</span>}
                     </div>
                 </div>
             </div>
@@ -210,7 +218,7 @@ const CompanyForm3 = ({session}) => {
                     </div>
                     <div className='width-50' style={{marginLeft:'10px'}}>
                         <input type="number" name="productCapacity" style={{backgroundColor:'#eee'}} value={formData.productCapacity} onChange={handleChange} required />
-                        {errors.productCapacity && <span className="error">{errors.productCapacity}</span>}
+                        {errors.productCapacity && <span className="error"style={{color: 'red', fontSize: '12px'}}>{errors.productCapacity}</span>}
                     </div>
                 </div>
                 <div className="form-group flex width-50" >
@@ -219,7 +227,7 @@ const CompanyForm3 = ({session}) => {
                     </div>
                     <div className='width-50' style={{marginLeft:'10px'}}>
                         <input type="text" name="companyERDAObjective" style={{backgroundColor:'#eee'}} value={formData.companyERDAObjective} onChange={handleChange} required />
-                        {errors.companyERDAObjective && <span className="error">{errors.companyERDAObjective}</span>}
+                        {errors.companyERDAObjective && <span className="error"style={{color: 'red', fontSize: '12px'}}>{errors.companyERDAObjective}</span>}
                     </div>
                 </div>
             </div>
@@ -246,7 +254,7 @@ const CompanyForm3 = ({session}) => {
                         </p>
                     
                     </div>
-                        {errors.companyERDARequiredServices && <span className="error">{errors.companyERDARequiredServices}</span>}
+                        {errors.companyERDARequiredServices && <span className="error"style={{color: 'red', fontSize: '12px'}}>{errors.companyERDARequiredServices}</span>}
                 </div>
             </div>
 
@@ -263,7 +271,7 @@ const CompanyForm3 = ({session}) => {
                             <input type="radio" className='radio-button' name="typeOfMembership" value="Associate" checked={formData.typeOfMembership === "Associate"} onChange={handleChange}/>Associate
                         </p>
                     </div>
-                        {errors.typeOfMembership && <span className="error">{errors.typeOfMembership}</span>}
+                        {errors.typeOfMembership && <span className="error"style={{color: 'red', fontSize: '12px'}}>{errors.typeOfMembership}</span>}
                 </div>
             </div>
 
@@ -285,7 +293,7 @@ const CompanyForm3 = ({session}) => {
                         </p>
                     
                     </div>
-                        {errors.companyTurnOverRange && <span className="error">{errors.companyTurnOverRange}</span>}
+                        {errors.companyTurnOverRange && <span className="error"style={{color: 'red', fontSize: '12px'}}>{errors.companyTurnOverRange}</span>}
                 </div>
             </div>
 
@@ -296,7 +304,7 @@ const CompanyForm3 = ({session}) => {
                     </div>
                     <div className='width-50' style={{marginLeft:'10px'}}>
                         <input type="file" name="file" onChange={handleChange} accept=".pdf" required style={{ backgroundColor: '#eee' }} />
-                        {errors.file && <span className="error">{errors.file}</span>}
+                        {errors.file && <span className="error"style={{color: 'red', fontSize: '12px'}}>{errors.file}</span>}
                     </div>
                 </div>
             </div>

@@ -72,14 +72,26 @@ const CompanyForm = ({ session }) => {
         if (!formData.companyName.trim()) {
             newErrors.companyName = 'Company Name is required';
         }
+        else if (formData.companyName.trim().length < 5) {
+            newErrors.companyName = 'companyName must be at least 5 characters long';
+        }
     
         if (!formData.companyAddress.trim()) {
             newErrors.companyAddress = 'Company Address is required';
         }
+        else if (formData.companyAddress.trim().length < 5) {
+            newErrors.companyAddress = 'companyAddress must be at least 5 characters long';
+        }
+    
+        
     
         if (!formData.ownerName.trim()) {
             newErrors.ownerName = 'Owner Name is required';
         }
+        else if (formData.ownerName.trim().length < 5) {
+            newErrors.ownerName = 'ownerName must be at least 5 characters long';
+        }
+    
     
         if (!formData.companyTelephone.trim()) {
             newErrors.companyTelephone = 'Company Telephone is required';
@@ -100,6 +112,10 @@ const CompanyForm = ({ session }) => {
         if (!formData.companyBranch.trim()) {
             newErrors.companyBranch = 'Company Branch is required';
         }
+        else if (formData.companyBranch.trim().length < 5) {
+            newErrors.companyBranch = 'companyBranch must be at least 5 characters long';
+        }
+    
     
         if (!formData.companyFactory.trim()) {
             newErrors.companyFactory = 'Company Factory is required';
@@ -150,7 +166,7 @@ const CompanyForm = ({ session }) => {
                     </div>
                     <div className='width-50' style={{marginLeft:'10px'}}>
                         <input type="text" name="companyName" value={formData.companyName} onChange={handleChange} required style={{backgroundColor:'#eee'}} />
-                        {errors.companyName && <p className="error-message">{errors.companyName}</p>}   
+                        {errors.companyName && <p className="error-message" style={{color: 'red', fontSize: '12px'}}>{errors.companyName}</p>}   
                     </div>
                 </div>
                 <div className="form-group flex width-50" >
@@ -159,7 +175,7 @@ const CompanyForm = ({ session }) => {
                     </div>
                     <div className='width-50' style={{marginLeft:'10px'}}>
                         <input type="text" name="companyAddress" value={formData.companyAddress} onChange={handleChange} required style={{backgroundColor:'#eee'}} />
-                        {errors.companyAddress && <p className="error-message">{errors.companyAddress}</p>}
+                        {errors.companyAddress && <p className="error-message"style={{color: 'red', fontSize: '12px'}}>{errors.companyAddress}</p>}
                     </div>
                 </div>
             </div>
@@ -170,7 +186,7 @@ const CompanyForm = ({ session }) => {
                     </div>
                     <div className='width-50' style={{marginLeft:'10px'}}>
                         <input type="text" name="ownerName" value={formData.ownerName} onChange={handleChange} required style={{backgroundColor:'#eee'}}/>  
-                        {errors.ownerName && <p className="error-message">{errors.ownerName}</p>} 
+                        {errors.ownerName && <p className="error-message"style={{color: 'red', fontSize: '12px'}}>{errors.ownerName}</p>} 
                     </div>
                 </div>
                 <div className="form-group flex width-50">
@@ -190,7 +206,7 @@ const CompanyForm = ({ session }) => {
                     </div>
                     <div className='width-50' style={{marginLeft:'10px'}}>
                         <input type="tel" name="companyPhone" value={formData.companyPhone} onChange={handleChange} style={{backgroundColor:'#eee'}}/>
-                        {errors.companyPhone && <p className="error-message">{errors.companyPhone}</p>}   
+                        {errors.companyPhone && <p className="error-message"style={{color: 'red', fontSize: '12px'}}>{errors.companyPhone}</p>}   
                     </div>
                 </div>
                 <div className="form-group flex width-50">
@@ -199,7 +215,7 @@ const CompanyForm = ({ session }) => {
                     </div>
                     <div className='width-50' style={{marginLeft:'10px'}}>
                         <input type="email" name="companyEmail" value={formData.companyEmail} onChange={handleChange} required style={{backgroundColor:'#eee'}}/>
-                        {errors.companyEmail && <p className="error-message">{errors.companyEmail}</p>}
+                        {errors.companyEmail && <p className="error-message" style={{color: 'red', fontSize: '12px'}} >{errors.companyEmail}</p>}
                     </div>
                 </div>
             </div>
@@ -210,7 +226,7 @@ const CompanyForm = ({ session }) => {
                     </div>
                     <div className='width-50' style={{marginLeft:'10px'}}>
                         <input type="text" name="companyBranch" value={formData.companyBranch} onChange={handleChange} style={{backgroundColor:'#eee'}}/>   
-                        {errors.companyBranch && <p className="error-message">{errors.companyBranch}</p>}
+                        {errors.companyBranch && <p className="error-message"style={{color: 'red', fontSize: '12px'}}>{errors.companyBranch}</p>}
                     </div>
                 </div>
                 <div className="form-group flex width-50">
@@ -219,7 +235,7 @@ const CompanyForm = ({ session }) => {
                     </div>
                     <div className='width-50' style={{marginLeft:'10px'}}>
                         <input type="text" name="companyFactory" value={formData.companyFactory} onChange={handleChange} style={{backgroundColor:'#eee'}}/>
-                        {errors.companyFactory && <p className="error-message">{errors.companyFactory}</p>}
+                        {errors.companyFactory && <p className="error-message" style={{color: 'red', fontSize: '12px'}}>{errors.companyFactory}</p>}
                     </div>
                 </div>
             </div>

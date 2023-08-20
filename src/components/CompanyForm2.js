@@ -65,6 +65,9 @@ const CompanyForm = ({session}) => {
         if (!formData.companyType.trim()) {
             newErrors.companyType = 'Company Type is required';
         }
+        else if (formData.companyType.trim().length < 5) {
+            newErrors.companyType = 'Company Type must be at least 5 characters long';
+        }
     
         if (!formData.registrationYear.trim()) {
             newErrors.registrationYear = 'Registration Date is required';
@@ -73,9 +76,9 @@ const CompanyForm = ({session}) => {
         if (!formData.panNumber.trim()) {
             newErrors.panNumber = 'PAN Number is required';
         } 
-        // else if (!/^([A-Z]){5}([0-9]){4}([A-Z]){1}$/.test(formData.panNumber)) {
-        //     newErrors.panNumber = 'Invalid PAN number format.';
-        // }
+        else if (!/^([A-Z]){5}([0-9]){4}([A-Z]){1}$/.test(formData.panNumber)) {
+            newErrors.panNumber = 'Invalid PAN number format.';
+        }
     
         if (!formData.cinNumber.trim()) {
             newErrors.cinNumber = 'CIN Number is required';
@@ -91,9 +94,9 @@ const CompanyForm = ({session}) => {
         if (!formData.gstNumber.trim()) {
             newErrors.gstNumber = 'GST Number is required';
         } 
-        // else if (!/^\d{2}[A-Z]{5}\d{4}[A-Z]{1}\d[Z]{1}[A-Z\d]{1}$/.test(formData.gstNumber)) {
-        //     newErrors.gstNumber = 'Invalid GST number format.';
-        // }
+        else if (!/^\d{2}[A-Z]{5}\d{4}[A-Z]{1}\d[Z]{1}[A-Z\d]{1}$/.test(formData.gstNumber)) {
+            newErrors.gstNumber = 'Invalid GST number format.';
+        }
         
         if (!formData.file) {
             newErrors.file = 'Registration Proof is required';
@@ -165,7 +168,7 @@ const CompanyForm = ({session}) => {
                     </div>
                     <div className='width-50' style={{marginLeft:'10px'}}>
                         <input type="text" name="companyType" value={formData.companyType} onChange={handleChange} required style={{ backgroundColor: '#eee' }} />   
-                        {errors.companyType && <p className="error-message">{errors.companyType}</p>}
+                        {errors.companyType && <p className="error-message" style={{color: 'red', fontSize: '12px'}}>{errors.companyType}</p>}
                     </div>
                 </div>
                 <div className="form-group flex width-50" >
@@ -174,7 +177,7 @@ const CompanyForm = ({session}) => {
                     </div>
                     <div className='width-50' style={{marginLeft:'0px'}}>
                         <input type="date" name="registrationYear" value={formData.registrationYear} onChange={handleChange} required style={{ backgroundColor: '#eee' }} />
-                        {errors.registrationYear && <p className="error-message">{errors.registrationYear}</p>}
+                        {errors.registrationYear && <p className="error-message"style={{color: 'red', fontSize: '12px'}}>{errors.registrationYear}</p>}
                     </div>
                 </div>
             </div>
@@ -187,7 +190,7 @@ const CompanyForm = ({session}) => {
                     </div>
                     <div className='width-50' style={{marginLeft:'10px'}}>
                         <input type="text" name="panNumber" value={formData.panNumber} onChange={handleChange} required style={{ backgroundColor: '#eee' }} />   
-                        {errors.panNumber && <p className="error-message">{errors.panNumber}</p>}
+                        {errors.panNumber && <p className="error-message" style={{color: 'red', fontSize: '12px'}}>{errors.panNumber}</p>}
                     </div>
                 </div>
                 <div className="form-group flex width-50" >
@@ -196,7 +199,7 @@ const CompanyForm = ({session}) => {
                     </div>
                     <div className='width-50' style={{marginLeft:'10px'}}>
                         <input type="text" name="cinNumber" value={formData.cinNumber} onChange={handleChange} style={{ backgroundColor: '#eee' }} />
-                        {errors.cinNumber && <p className="error-message">{errors.cinNumber}</p>}
+                        {errors.cinNumber && <p className="error-message" style={{color: 'red', fontSize: '12px'}}>{errors.cinNumber}</p>}
                     </div>
                 </div>
             </div>
@@ -207,7 +210,7 @@ const CompanyForm = ({session}) => {
                     </div>
                     <div className='width-50' style={{marginLeft:'10px'}}>
                         <input style={{backgroundColor:'#eee'}} type="text" name="registrationProofName" value={formData.registrationProofName} onChange={handleChange} required />
-                        {errors.registrationProofName && <p className="error-message">{errors.registrationProofName}</p>}
+                        {errors.registrationProofName && <p className="error-message" style={{color: 'red', fontSize: '12px'}}>{errors.registrationProofName}</p>}
                     </div>
                 </div>
 
@@ -217,7 +220,7 @@ const CompanyForm = ({session}) => {
                     </div>
                     <div className='width-50' style={{marginLeft:'10px'}}>
                         <input type="text" name="gstNumber" value={formData.gstNumber} onChange={handleChange} required style={{ backgroundColor: '#eee' }} />
-                        {errors.gstNumber && <p className="error-message">{errors.gstNumber}</p>}
+                        {errors.gstNumber && <p className="error-message" style={{color: 'red', fontSize: '12px'}}>{errors.gstNumber}</p>}
                     </div>
                 </div>
                 
@@ -229,7 +232,7 @@ const CompanyForm = ({session}) => {
                     </div>
                     <div className='width-50' style={{marginLeft:'0px'}}>
                         <input type="file" name="file" onChange={handleChange} accept=".pdf" required style={{ backgroundColor: '#eee' }} />
-                        {errors.file && <p className="error-message">{errors.file}</p>}
+                        {errors.file && <p className="error-message" style={{color: 'red', fontSize: '12px'}}>{errors.file}</p>}
                     </div>
                 </div>
             </div>
