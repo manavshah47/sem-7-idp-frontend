@@ -20,7 +20,7 @@ const CompanyLogin = () => {
                 <img src="/images/logo.png"/>
                 </div> 
                 <Components.Form>
-                  <Components.Title>Sign in</Components.Title>
+                <Components.Title style={{ color: '#0f3c69' }}>Log In</Components.Title>
                   <div style={{ padding: '0px 10px 20px 10px' }}> 
                     <Components.Input type='text' placeholder='Enter ID' value={id} onChange={(e) => setId(e.target.value)}  />
                     <Components.Input type='text' placeholder='Enter Password' value={password} onChange={(e) => setPassword(e.target.value)}  />

@@ -101,7 +101,7 @@ function Login({ login, session }) {
            <Components.SignUpContainer signinIn={signIn}>
                {signUpOTP ?
                 <Components.Form>
-                  <Components.Title>Sign in</Components.Title>
+                <Components.Title style={{ color: '#0f3c69' }}>Sign in</Components.Title>
                   <div style={{ padding: '20px 10px' }}> 
                   <Components.Input type='text' placeholder='Enter OTP' value={otp} onChange={(e) => setOtp(e.target.value)}  />
                   </div>
@@ -127,7 +127,7 @@ function Login({ login, session }) {
                 </div>
                 {showOTP ? 
                 <Components.Form>
-                  <Components.Title>Sign in</Components.Title>
+                <Components.Title style={{ color: 'black' }}>Sign In</Components.Title>
                   <div style={{ padding: '20px 10px' }}> 
                   <Components.Input type='text' placeholder='Enter OTP' value={otp} onChange={(e) => setOtp(e.target.value)}  />
                   </div>
@@ -135,7 +135,7 @@ function Login({ login, session }) {
                 </Components.Form>
                 :
                 <Components.Form>
-                    <Components.Title>Sign in</Components.Title>
+                <Components.Title style={{ color: '#0f3c69' }}>Sign In</Components.Title>
                     <div style={{ padding: '20px 10px' }}> 
                     <Components.Input type='text' placeholder='Mobile Number' value={number} onChange={(e) => setNumber(e.target.value)}  />
                     </div>

@@ -7,6 +7,8 @@ import { toast } from 'react-toastify';
 import { connect } from 'react-redux'; 
 
 import { Link } from 'react-router-dom';
+import Loader from "./Loader";
+
 
 const mapStateToProps = ({ session }) => ({
     session
@@ -21,8 +23,8 @@ const CompanyForm3 = ({session}) => {
         productCapacity: '',
         companyERDAObjective: '',
         companyERDARequiredServices: [],
-        typeOfMembership: 'Ordinary',
-        companyTurnOverRange: 'upto 5 cr',
+        typeOfMembership: '',
+        companyTurnOverRange: '',
         file: null,
     });
 
@@ -151,6 +153,8 @@ const CompanyForm3 = ({session}) => {
         console.log(errors)
     }, [errors])
     
+    const [loader, setLoader] = useState(false)
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -170,6 +174,8 @@ const CompanyForm3 = ({session}) => {
             );
     
             if (confirmSubmission) {
+                setLoader(true)
+
                 let { productName, productCapacity, productUnit, companyERDARequiredServices, ...other } = formData;
                 let companyProducts = JSON.stringify([
                     {
@@ -189,6 +195,8 @@ const CompanyForm3 = ({session}) => {
                     { headers: { "Content-Type": "multipart/form-data" } }
                 );
                 toast(response.data.message);
+                setLoader(false)
+
     
                 if (response.data.success) {
                     navigate("/membership-status");
@@ -197,7 +205,14 @@ const CompanyForm3 = ({session}) => {
         }
     };
     
-
+    if(loader){
+        return (
+        <div style={{width : '100%', height:'100%'}}>
+            <Loader/>
+        </div>
+        )
+      }
+      else{
     return (
         <div className="flex" style={{justifyContent:'center', alignItems:'center', paddingTop:"100px"}}>
         <center>
@@ -316,7 +331,8 @@ const CompanyForm3 = ({session}) => {
                     </div>
                     <div className='' style={{marginLeft:'10px'}}>
                         <input type="file" name="file" onChange={handleChange} accept=".pdf" required style={{ backgroundColor: '#eee' }} />
-                        {formData.file?.includes("https://idp-sem-7.s3.us-east-1.amazonaws.com") && <Link to={formData.file} style={{margin:"auto"}} target="_blank" rel="noopener noreferrer"> <button type="button" className='savebtn' style={{ borderColor: '#0f3c69', backgroundColor: '#0f3c69', color: 'white', borderRadius: 5, height:'45px', margin:'auto'}} >View Document</button> </Link> }
+                        {(formData != null && formData.file?.type !== 'application/pdf' && formData.file?.includes("https://idp-sem-7.s3.us-east-1.amazonaws.com")) && 
+                        <Link to={formData.file} target="_blank" rel="noopener noreferrer"> <button type="button" className='savebtn' style={{ borderColor: '#0f3c69', backgroundColor: '#0f3c69', color: 'white', borderRadius: 5, height:'44px', margin:'auto',marginLeft:55,marginTop:8}} >View Document</button> </Link> }
                         {errors.file && <span className="error"style={{color: 'red', fontSize: '12px'}}>{errors.file}</span>}
                     </div>
                 </div>
@@ -334,7 +350,7 @@ const CompanyForm3 = ({session}) => {
             </form>
         </center>
         </div>
-    );
+    )};
 };
 
 export default connect(

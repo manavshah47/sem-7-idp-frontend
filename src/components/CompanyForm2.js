@@ -7,6 +7,8 @@ import { toast } from 'react-toastify';
 import { connect } from 'react-redux';
 
 import { Link } from 'react-router-dom';
+import Loader from "./Loader";
+
 
 const mapStateToProps = ({ session }) => ({
     session
@@ -145,9 +147,12 @@ const CompanyForm = ({session}) => {
 
         if (isValid) {
             // withCredentials to send httpOnly cookie via request
+            setLoader(true)
             axios.defaults.withCredentials = true;
 
             const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/membership/company-info-2`, {...formData}, {headers:{"Content-Type":"multipart/form-data"}})
+            setLoader(false)
+
             console.log(response.data)
             if(response.data.success){
                 toast(response.data.message)
@@ -157,11 +162,21 @@ const CompanyForm = ({session}) => {
             }
         }
     };
+    const [loader, setLoader] = useState(false)
+
 
     useEffect(()=> {
         console.log(formData.file)
     }, [formData])
 
+    if(loader){
+        return (
+        <div style={{width : '100%', height:'100%'}}>
+            <Loader/>
+        </div>
+        )
+      }
+      else{
     return (
         <div className="flex" style={{justifyContent:'center', alignItems:'center', paddingTop:"100px"}}>
         <center>
@@ -267,7 +282,8 @@ const CompanyForm = ({session}) => {
                     </div>
                     <div className='flex' style={{marginLeft:'0px'}}>
                         <input type="file" name="file" id='file-input' title={formData.file} onChange={handleChange} accept=".pdf" required style={{ backgroundColor: '#eee' }} />
-                        {formData.file?.includes("https://idp-sem-7.s3.us-east-1.amazonaws.com") && <Link to={formData.file} target="_blank" rel="noopener noreferrer"> <button type="button" className='savebtn' style={{ borderColor: '#0f3c69', backgroundColor: '#0f3c69', color: 'white', borderRadius: 5, height:'45px', margin:'auto'}} >View Document</button> </Link> }
+                        {(formData != null && formData.file?.type !== 'application/pdf' && formData.file?.includes("https://idp-sem-7.s3.us-east-1.amazonaws.com")) && 
+                        <Link to={formData.file} target="_blank" rel="noopener noreferrer"> <button type="button" className='savebtn' style={{ borderColor: '#0f3c69', backgroundColor: '#0f3c69', color: 'white', borderRadius: 5, height:'44px', margin:'auto',marginLeft:55,marginTop:8}} >View Document</button> </Link> }
                         {errors.file && <p className="error-message" style={{color: 'red', fontSize: '12px'}}>{errors.file}</p>}
                     </div>
                 </div>
@@ -285,7 +301,7 @@ const CompanyForm = ({session}) => {
         </form>
         </center>
         </div>
-    );
+    )};
 };
 
 export default connect(

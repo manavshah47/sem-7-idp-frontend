@@ -5,6 +5,8 @@ import axios from 'axios'; // Import Axios
 
 import { toast } from 'react-toastify'
 import { connect } from 'react-redux';
+import Loader from "./Loader";
+
 
 const mapStateToProps = ({ session }) => ({
     session
@@ -46,6 +48,8 @@ const CompanyForm = ({ session }) => {
                     companyFactory: temp.companyFactory
                 })
 
+            } else {
+                setIsDataUpdated(true)
             }
 
         } catch (error) {
@@ -125,13 +129,13 @@ const CompanyForm = ({ session }) => {
         return Object.keys(newErrors).length === 0;
     };
     
+    const [loader, setLoader] = useState(false)
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         console.log('handleSubmit triggered');
 
         const isValid = validateForm();
-
         if(!isDataUpdated){
             console.log('Navigating to /company-info-2');
             navigate("/company-info-2")
@@ -139,10 +143,15 @@ const CompanyForm = ({ session }) => {
         }
     
         if (isValid) {
+            setLoader(true)
+
             // withCredentials to send httpOnly cookie via request
             axios.defaults.withCredentials = true;
 
             const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/membership/company-info-1`, {...formData}, {headers:{"Content-Type":"application/json"}})
+            console.log(response.data)
+            setLoader(false)
+          
 
             if(response.data.success){
                 toast(response.data.message)
@@ -153,7 +162,16 @@ const CompanyForm = ({ session }) => {
         }
     };
     
+    if(loader){
+        return (
+        <div style={{width : '100%', height:'100%'}}>
+            <Loader/>
+        </div>
+        )
+      }
+      else{
 
+      
     return (
         <div className="flex" style={{justifyContent:'center', alignItems:'center', paddingTop:"100px"}}>
         <center>
@@ -245,7 +263,7 @@ const CompanyForm = ({ session }) => {
         </form>
         </center>
         </div>
-    );
+    )};
 };
 
 export default connect(
