@@ -267,7 +267,8 @@ const CompanyForm = ({session}) => {
                     </div>
                     <div className='flex' style={{marginLeft:'0px'}}>
                         <input type="file" name="file" id='file-input' title={formData.file} onChange={handleChange} accept=".pdf" required style={{ backgroundColor: '#eee' }} />
-                        {formData.file?.includes("https://idp-sem-7.s3.us-east-1.amazonaws.com") && <Link to={formData.file} target="_blank" rel="noopener noreferrer"> <button type="button" className='savebtn' style={{ borderColor: '#0f3c69', backgroundColor: '#0f3c69', color: 'white', borderRadius: 5, height:'45px', margin:'auto'}} >View Document</button> </Link> }
+                        {(formData != null && formData.file?.type !== 'application/pdf' && formData.file?.includes("https://idp-sem-7.s3.us-east-1.amazonaws.com")) && 
+                        <Link to={formData.file} target="_blank" rel="noopener noreferrer"> <button type="button" className='savebtn' style={{ borderColor: '#0f3c69', backgroundColor: '#0f3c69', color: 'white', borderRadius: 5, height:'44px', margin:'auto',marginLeft:55,marginTop:8}} >View Document</button> </Link> }
                         {errors.file && <p className="error-message" style={{color: 'red', fontSize: '12px'}}>{errors.file}</p>}
                     </div>
                 </div>

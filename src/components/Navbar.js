@@ -5,11 +5,17 @@ import { useNavigate } from "react-router";
 
 import { connect } from "react-redux";
 
+import { logOutUser } from '../actions/session';
+
 const mapStateToProps = ({ session }) => ({
   session
 })
 
-const Navbar = ({session}) => {
+const mapDispatchToProps = dispatch => ({
+  logout: () => dispatch(logOutUser())
+});
+
+const Navbar = ({session, logout}) => {
   const [li, setLi] = useState([]);
 
   const navigate = useNavigate()
@@ -53,7 +59,13 @@ const Navbar = ({session}) => {
   };
 
   const openPage = (index) => {
-    navigate(li[index][0].toLowerCase())
+    if(li[index][0].toLowerCase() == "log out"){
+      const userConfirmed = window.confirm("Are you sure you want to log out?");
+      if (userConfirmed) {
+        logout();
+      }    } else {
+      navigate(li[index][0].toLowerCase())
+    }
   }
 
   const handleMouseLeave = () => {
@@ -107,5 +119,6 @@ const Navbar = ({session}) => {
 };
 
 export default connect(
-  mapStateToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(Navbar);
