@@ -16,6 +16,7 @@ import axios from 'axios'
 import { logInUser } from "../actions/session";
 import { Header } from "./Header";
 import { Link } from "react-router-dom";
+import Loader from "./Loader";
 
 const mapStateToProps = ({ session }) => ({
   session
@@ -38,6 +39,8 @@ function Login({ login, session }) {
 
   const [signUpOTP, setSignUpOTP] = useState(false)
 
+  const [loader, setLoader] = useState(false)
+
   const openPage = () => {
     toggle(!signIn)
     setNumber("")
@@ -45,28 +48,33 @@ function Login({ login, session }) {
 
   const createMember = async (e) => {
     e.preventDefault()
+    setLoader(true)
     const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/member/create-member`, { firstName, lastName, email, phone: number }, { headers: {"Content-Type":"application/json"}})
     console.log(response.data)
     if(response.data.success){
-        toast(response.data.message)
-        setSignUpOTP(true)
+      toast(response.data.message)
+      setSignUpOTP(true)
     } else {
-        toast(response.data.message)
+      toast(response.data.message)
     }
+    setLoader(false)
   }
 
   const handleOtpSubmit = async (e) => {
     e.preventDefault()
+    setLoader(true)
     const user = {
       id:number,
       password:otp
     }
-    login(user)
+    await login(user)
+    setLoader(false)
   }
 
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    setLoader(true)
     try {
       const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/member/send-otp`, {phone:number}, { headers: {"Content-Type":"application/json"}})
       if(response.data.success){
@@ -78,12 +86,16 @@ function Login({ login, session }) {
     } catch (error) {
       console.log(error)
     }
+    setLoader(false)
   }
 
-
+  if(loader){
+    return (
+      <Loader/>
+    )
+  } else {
    return(
      <>
-     
       <div className="main-container">
        <Components.Container>
            <Components.SignUpContainer signinIn={signIn}>
@@ -164,7 +176,7 @@ function Login({ login, session }) {
        </div>
     </>
    )
-
+  }
 }
 
 
