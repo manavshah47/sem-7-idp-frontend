@@ -60,7 +60,7 @@ function App({ session }) {
   } else {
     return(
       <>
-      <div className="backImage">
+      {/* <div className="backImage"> */}
 {/* <Header/> */}
 {/* <Navbar/> */}
       <Routes>
@@ -68,7 +68,7 @@ function App({ session }) {
         <Route path="/*" element={<Login/>} />
       </Routes>
       <ToastContainer />
-      </div>
+      {/* </div> */}
       
     </>
    )
