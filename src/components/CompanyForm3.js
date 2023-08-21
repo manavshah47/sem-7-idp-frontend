@@ -154,39 +154,49 @@ const CompanyForm3 = ({session}) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        
+    
         const isValid = validateForm();
-
-        if(!isDataUpdated && isValid){
-            // go to show data page as no data is updated and previous inserted data is correct
-            // no updation condition
-            navigate("/membership-status")
+    
+        if (!isDataUpdated && isValid) {
+            // Go to the show data page as no data is updated, and previous inserted data is correct
+            navigate("/membership-status");
             return;
         }
-        
-        
-        let { productName, productCapacity, productUnit, companyERDARequiredServices, ...other } = formData
-        
-        let companyProducts = JSON.stringify([{
-            productName:productName,
-            productUnit:productUnit,
-            productCapacity:productCapacity
-        }])
-
-        companyERDARequiredServices = JSON.stringify(companyERDARequiredServices)
-
+    
         if (isValid) {
-
-            axios.defaults.withCredentials = true
-            
-            const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/membership/company-info-3`, { ...other, companyProducts, companyERDARequiredServices }, {headers:{"Content-Type":"multipart/form-data"}})
-            toast(response.data.message)
-
-            if(response.data.success){
-                navigate("/membership-status")
+            // Show a confirmation alert before submitting
+            const confirmSubmission = window.confirm(
+                "Are you sure you want to submit? You won't be able to edit this information later."
+            );
+    
+            if (confirmSubmission) {
+                let { productName, productCapacity, productUnit, companyERDARequiredServices, ...other } = formData;
+                let companyProducts = JSON.stringify([
+                    {
+                        productName: productName,
+                        productUnit: productUnit,
+                        productCapacity: productCapacity,
+                    },
+                ]);
+    
+                companyERDARequiredServices = JSON.stringify(companyERDARequiredServices);
+    
+                axios.defaults.withCredentials = true;
+    
+                const response = await axios.put(
+                    `${process.env.REACT_APP_BASE_URL}/membership/company-info-3`,
+                    { ...other, companyProducts, companyERDARequiredServices },
+                    { headers: { "Content-Type": "multipart/form-data" } }
+                );
+                toast(response.data.message);
+    
+                if (response.data.success) {
+                    navigate("/membership-status");
+                }
             }
         }
     };
+    
 
     return (
         <div className="flex" style={{justifyContent:'center', alignItems:'center', paddingTop:"100px"}}>
@@ -316,8 +326,8 @@ const CompanyForm3 = ({session}) => {
                     <div style={{ paddingLeft:30, paddingBottom:20, paddingTop:30}}>
                         <button type="submit" onClick={navigatepreviouspage} className='savebtn' style={{ borderColor: '#0f3c69', backgroundColor: '#0f3c69', color: 'white', borderRadius: 20, marginInline: 5 }} >Previous Page</button>
                     </div>
-                    <div style={{ paddingLeft:20, paddingBottom:20, paddingTop:30, marginInlineStart: '40em'}}>
-                        <button type="submit" className='savebtn' onClick={handleSubmit} style={{ borderColor: '#0f3c69', backgroundColor: '#0f3c69', color: 'white', borderRadius: 20, marginInline: 5 }} >Save & Next</button>
+                    <div style={{ paddingLeft:45, paddingBottom:20, paddingTop:33, marginInlineStart: '40em'}}>
+                        <button type="submit" className='savebtn' onClick={handleSubmit} style={{ borderColor: '#0f3c69', backgroundColor: '#0f3c69', color: 'white', borderRadius: 30, marginInline: 40 }} >Submit</button>
                     </div>
                 </div>
             </center>

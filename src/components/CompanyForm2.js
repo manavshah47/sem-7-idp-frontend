@@ -103,7 +103,7 @@ const CompanyForm = ({session}) => {
         if (!formData.file) {
             newErrors.file = 'Registration Proof is required';
         } 
-        else if (!(formData.file?.type == 'application/pdf' || formData.file.includes("https://idp-sem-7.s3.us-east-1.amazonaws.com"))) {
+        else if (!(formData.file?.type === 'application/pdf' || formData.file.includes("https://idp-sem-7.s3.us-east-1.amazonaws.com"))) {
             newErrors.file = 'File must be in PDF format.';
         }
 
@@ -172,18 +172,34 @@ const CompanyForm = ({session}) => {
                     <div className='width-50' style={{marginLeft:'50px'}}>
                         <p className='label' style={{textAlign:'start'}}>Company Type:</p>
                     </div>
-                    <div className='width-50' style={{marginLeft:'10px'}}>
-                        <input type="text" name="companyType" value={formData.companyType} onChange={handleChange} required style={{ backgroundColor: '#eee' }} />   
-                        {errors.companyType && <p className="error-message" style={{color: 'red', fontSize: '12px'}}>{errors.companyType}</p>}
-                    </div>
+                    <div className='width-60' style={{ marginLeft: '0px' }}>
+                    <select
+                        name="companyType"
+                        value={formData.companyType}
+                        onChange={handleChange}
+                        required
+                        style={{ backgroundColor: '#eee', fontSize: '100%',paddingTop:10, paddingBottom:10, paddingRight:38, paddingLeft:15,marginRight :2,borderRadius:3,marginBottom:2}}
+                    >
+                        <option value="">Select Company Type</option>
+                        <option value="private">Private</option>
+                        <option value="public">Public</option>
+                        <option value="corporate">Corporate</option>
+                        <option value="others">Others</option>
+                    </select>
+                    {errors.companyType && (
+                        <p className="error-message" style={{ color: 'red', fontSize: '12px' }}>
+                            {errors.companyType}
+                        </p>
+                    )}
+                </div>
+
                 </div>
                 <div className="form-group flex width-50" >
                     <div className='width-50' style={{marginLeft:'45px'}}>
                         <p className='label' style={{textAlign:'start'}}>Registration Date:</p>
                     </div>
                     <div className='width-50' style={{marginLeft:'0px'}}>
-                        <button ></button>
-                        <input type="date" name="registrationYear" value={formData.registrationYear} onChange={handleChange} required style={{ backgroundColor: '#eee' }} />
+                        <input type="date" name="registrationYear" value={formData.registrationYear} onChange={handleChange} required style={{ backgroundColor: '#eee',paddingLeft:33,paddingRight:35,marginLeft:5 }} />
                         {errors.registrationYear && <p className="error-message"style={{color: 'red', fontSize: '12px'}}>{errors.registrationYear}</p>}
                     </div>
                 </div>
@@ -216,8 +232,20 @@ const CompanyForm = ({session}) => {
                         <p className='label' style={{textAlign:'start'}}>Registration Proof Name:</p>
                     </div>
                     <div className='width-50' style={{marginLeft:'10px'}}>
-                        <input style={{backgroundColor:'#eee'}} type="text" name="registrationProofName" value={formData.registrationProofName} onChange={handleChange} required />
-                        {errors.registrationProofName && <p className="error-message" style={{color: 'red', fontSize: '12px'}}>{errors.registrationProofName}</p>}
+                    <select
+                        name="registrationProofName"
+                        value={formData.registrationProofName}
+                        onChange={handleChange}
+                        required
+                        style={{ backgroundColor: '#eee', fontSize: '100%',paddingTop:10, paddingBottom:10, paddingRight:55, paddingLeft:18,marginRight :2,borderRadius:3,marginTop : 2,marginLeft:5}}
+                    >
+                        <option value="">Select Proof Name</option>
+                        <option value="Pan">Pan</option>
+                        <option value="Electricity">Electricity Bill</option>
+                        <option value="Gst">GST Proof</option>
+                        <option value="others">Others</option>
+                    </select>
+                    {errors.registrationProofName && <p className="error-message" style={{color: 'red', fontSize: '12px'}}>{errors.registrationProofName}</p>}
                     </div>
                 </div>
 

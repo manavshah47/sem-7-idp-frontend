@@ -96,13 +96,13 @@ const CompanyForm = ({ session }) => {
         if (!formData.companyTelephone.trim()) {
             newErrors.companyTelephone = 'Company Telephone is required';
         } else if (!/^\d{10}$/.test(formData.companyTelephone)) {
-            newErrors.companyTelephone = 'Company Telephone should have 10 digits';
+            newErrors.companyTelephone = 'Telephone must have 10 digits';
         }
     
         if (!formData.companyPhone.trim()) {
             newErrors.companyPhone = 'Company Phone is required';
         } else if (!/^\d{10}$/.test(formData.companyPhone)) {
-            newErrors.companyPhone = 'Company Phone should have 10 digits';
+            newErrors.companyPhone = 'Phone must have 10 digits';
         }
     
         if (formData.companyEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.companyEmail)) {
@@ -195,7 +195,7 @@ const CompanyForm = ({ session }) => {
                     </div>
                     <div className='width-50' style={{marginLeft:'10px'}}>
                         <input type="tel" name="companyTelephone" value={formData.companyTelephone} onChange={handleChange} style={{backgroundColor:'#eee'}}/>
-                        {errors.companyTelephone && <p className="error-message">{errors.companyTelephone}</p>}
+                        {errors.companyTelephone && <p className="error-message"style={{color: 'red', fontSize: '12px'}}>{errors.companyTelephone}</p>}
                     </div>
                 </div>
             </div>
