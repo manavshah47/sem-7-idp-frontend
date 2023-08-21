@@ -6,6 +6,8 @@ import { toast } from 'react-toastify';
 
 import { connect } from 'react-redux'; 
 
+import { Link } from 'react-router-dom';
+
 const mapStateToProps = ({ session }) => ({
     session
 })
@@ -298,12 +300,13 @@ const CompanyForm3 = ({session}) => {
             </div>
 
             <div style={{textAlign:'start' ,marginLeft:'60px', paddingTop:10}}>
-                <div className="form-group flex width-50" >
-                    <div className='width-50'>
+                <div className="form-group flex" style={{alignItems:'center'}}>
+                    <div className=''>
                         <p className='label'  style={{ marginRight: 20, textAlign:'start'}}>Turnover Sheet:</p>
                     </div>
-                    <div className='width-50' style={{marginLeft:'10px'}}>
+                    <div className='' style={{marginLeft:'10px'}}>
                         <input type="file" name="file" onChange={handleChange} accept=".pdf" required style={{ backgroundColor: '#eee' }} />
+                        {formData.file?.includes("https://idp-sem-7.s3.us-east-1.amazonaws.com") && <Link to={formData.file} style={{margin:"auto"}} target="_blank" rel="noopener noreferrer"> <button type="button" className='savebtn' style={{ borderColor: '#0f3c69', backgroundColor: '#0f3c69', color: 'white', borderRadius: 5, height:'45px', margin:'auto'}} >View Document</button> </Link> }
                         {errors.file && <span className="error"style={{color: 'red', fontSize: '12px'}}>{errors.file}</span>}
                     </div>
                 </div>

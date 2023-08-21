@@ -6,6 +6,8 @@ import axios from 'axios'; // Import Axios
 import { toast } from 'react-toastify';
 import { connect } from 'react-redux';
 
+import { Link } from 'react-router-dom';
+
 const mapStateToProps = ({ session }) => ({
     session
 })
@@ -34,7 +36,7 @@ const CompanyForm = ({session}) => {
     const preLoadData = async () => {
         try {
             const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/membership/membership/${session.memberId}`)
-
+            // console.log(response.data)
             if(response.data.success){
                 let temp = response.data.data
                 let date = new Date(temp.companyRegistrationYear).toISOString().split('T', 1)[0]
@@ -83,9 +85,9 @@ const CompanyForm = ({session}) => {
         if (!formData.cinNumber.trim()) {
             newErrors.cinNumber = 'CIN Number is required';
         } 
-        // else if (!/^([A-Z]){1}([0-9]){5}([A-Z]){2}([0-9]){4}([A-Z]){3}([0-9]){6}$/.test(formData.cinNumber)) {
-        //     newErrors.cinNumber = 'Invalid CIN number format.';
-        // }
+        else if (!/^([A-Z]){1}([0-9]){5}([A-Z]){2}([0-9]){4}([A-Z]){3}([0-9]){6}$/.test(formData.cinNumber)) {
+            newErrors.cinNumber = 'Invalid CIN number format.';
+        }
     
         if (!formData.registrationProofName.trim()) {
             newErrors.registrationProofName = 'Registration Proof Name is required';
@@ -156,6 +158,10 @@ const CompanyForm = ({session}) => {
         }
     };
 
+    useEffect(()=> {
+        console.log(formData.file)
+    }, [formData])
+
     return (
         <div className="flex" style={{justifyContent:'center', alignItems:'center', paddingTop:"100px"}}>
         <center>
@@ -176,6 +182,7 @@ const CompanyForm = ({session}) => {
                         <p className='label' style={{textAlign:'start'}}>Registration Date:</p>
                     </div>
                     <div className='width-50' style={{marginLeft:'0px'}}>
+                        <button ></button>
                         <input type="date" name="registrationYear" value={formData.registrationYear} onChange={handleChange} required style={{ backgroundColor: '#eee' }} />
                         {errors.registrationYear && <p className="error-message"style={{color: 'red', fontSize: '12px'}}>{errors.registrationYear}</p>}
                     </div>
@@ -226,12 +233,13 @@ const CompanyForm = ({session}) => {
                 
             </div>
             <div style={{textAlign:'start' ,marginLeft:'70px', paddingTop:10}}>
-                <div className="form-group flex width-50" >
-                    <div className='width-50'>
+                <div className="form-group flex" style={{alignItems:'center'}}>
+                    <div className=''>
                         <p className='label'  style={{ marginRight: 20, textAlign:'start'}}>Registration Proof:</p>
                     </div>
-                    <div className='width-50' style={{marginLeft:'0px'}}>
-                        <input type="file" name="file" onChange={handleChange} accept=".pdf" required style={{ backgroundColor: '#eee' }} />
+                    <div className='flex' style={{marginLeft:'0px'}}>
+                        <input type="file" name="file" id='file-input' title={formData.file} onChange={handleChange} accept=".pdf" required style={{ backgroundColor: '#eee' }} />
+                        {formData.file?.includes("https://idp-sem-7.s3.us-east-1.amazonaws.com") && <Link to={formData.file} target="_blank" rel="noopener noreferrer"> <button type="button" className='savebtn' style={{ borderColor: '#0f3c69', backgroundColor: '#0f3c69', color: 'white', borderRadius: 5, height:'45px', margin:'auto'}} >View Document</button> </Link> }
                         {errors.file && <p className="error-message" style={{color: 'red', fontSize: '12px'}}>{errors.file}</p>}
                     </div>
                 </div>
