@@ -49,7 +49,7 @@ function App({ session }) {
   } else if(session.typeOfUser == "admin"){
     return(
       <>
-        <Header/>
+        {/* <Header/> */}
         <Navbar/>
         <Routes>
           <Route path="/profile" element={<Home/>} />

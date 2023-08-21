@@ -23,10 +23,12 @@ const Navbar = ({session}) => {
   ];
 
   const adminLi = [
-  ["Dashboard", "images/dashboard.svg"],
-  ["Membership Zone", "images/Magazine.svg"],
-  ["Control Pane", "images/member.svg"],
-  ["Log Out", "images/btn2.png"]];
+    ["Dashboard", "images/dashboard.svg"],
+    ["Create User", "images/Magazine.svg"],
+    ["Show Users", "images/profile.svg"],
+    ["Memberships", "images/member.svg"],
+    ["Log Out", "images/btn2.png"]
+  ];
 
   const approverLi = [
   ["Dashboard", "images/dashboard.svg"],
