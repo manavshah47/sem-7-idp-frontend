@@ -7,6 +7,8 @@ import { toast } from 'react-toastify';
 import { connect } from 'react-redux'; 
 
 import { Link } from 'react-router-dom';
+import Loader from "./Loader";
+
 
 const mapStateToProps = ({ session }) => ({
     session
@@ -151,6 +153,8 @@ const CompanyForm3 = ({session}) => {
         console.log(errors)
     }, [errors])
     
+    const [loader, setLoader] = useState(false)
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -170,6 +174,8 @@ const CompanyForm3 = ({session}) => {
             );
     
             if (confirmSubmission) {
+                setLoader(true)
+
                 let { productName, productCapacity, productUnit, companyERDARequiredServices, ...other } = formData;
                 let companyProducts = JSON.stringify([
                     {
@@ -189,6 +195,8 @@ const CompanyForm3 = ({session}) => {
                     { headers: { "Content-Type": "multipart/form-data" } }
                 );
                 toast(response.data.message);
+                setLoader(false)
+
     
                 if (response.data.success) {
                     navigate("/membership-status");
@@ -197,7 +205,14 @@ const CompanyForm3 = ({session}) => {
         }
     };
     
-
+    if(loader){
+        return (
+        <div style={{width : '100%', height:'100%'}}>
+            <Loader/>
+        </div>
+        )
+      }
+      else{
     return (
         <div className="flex" style={{justifyContent:'center', alignItems:'center', paddingTop:"100px"}}>
         <center>
@@ -335,7 +350,7 @@ const CompanyForm3 = ({session}) => {
             </form>
         </center>
         </div>
-    );
+    )};
 };
 
 export default connect(

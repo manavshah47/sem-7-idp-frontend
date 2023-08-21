@@ -7,6 +7,8 @@ import { toast } from 'react-toastify';
 import { connect } from 'react-redux';
 
 import { Link } from 'react-router-dom';
+import Loader from "./Loader";
+
 
 const mapStateToProps = ({ session }) => ({
     session
@@ -145,9 +147,12 @@ const CompanyForm = ({session}) => {
 
         if (isValid) {
             // withCredentials to send httpOnly cookie via request
+            setLoader(true)
             axios.defaults.withCredentials = true;
 
             const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/membership/company-info-2`, {...formData}, {headers:{"Content-Type":"multipart/form-data"}})
+            setLoader(false)
+
             console.log(response.data)
             if(response.data.success){
                 toast(response.data.message)
@@ -157,11 +162,21 @@ const CompanyForm = ({session}) => {
             }
         }
     };
+    const [loader, setLoader] = useState(false)
+
 
     useEffect(()=> {
         console.log(formData.file)
     }, [formData])
 
+    if(loader){
+        return (
+        <div style={{width : '100%', height:'100%'}}>
+            <Loader/>
+        </div>
+        )
+      }
+      else{
     return (
         <div className="flex" style={{justifyContent:'center', alignItems:'center', paddingTop:"100px"}}>
         <center>
@@ -286,7 +301,7 @@ const CompanyForm = ({session}) => {
         </form>
         </center>
         </div>
-    );
+    )};
 };
 
 export default connect(

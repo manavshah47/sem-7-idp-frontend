@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "../Navbar.css";
+import Loader from "./Loader";
+
 
 import { useNavigate } from "react-router";
 
@@ -15,11 +17,12 @@ const mapDispatchToProps = dispatch => ({
   logout: () => dispatch(logOutUser())
 });
 
+
 const Navbar = ({session, logout}) => {
   const [li, setLi] = useState([]);
-
+  
   const navigate = useNavigate()
-
+  
   const memberLi = [
     ["Dashboard", "images/dashboard.svg"],
     ["Profile", "images/profile.svg"],
@@ -27,19 +30,20 @@ const Navbar = ({session, logout}) => {
     ["Membership-Form", "images/member.svg"],
     ["Log Out", "images/btn2.png"]
   ];
-
+  
   const adminLi = [
-  ["Dashboard", "images/dashboard.svg"],
-  ["Membership Zone", "images/Magazine.svg"],
-  ["Control Pane", "images/member.svg"],
-  ["Log Out", "images/btn2.png"]];
+    ["Dashboard", "images/dashboard.svg"],
+    ["Membership Zone", "images/Magazine.svg"],
+    ["Control Pane", "images/member.svg"],
+    ["Log Out", "images/btn2.png"]];
+    
+    const approverLi = [
+      ["Dashboard", "images/dashboard.svg"],
+      ["Membership Zone", "images/Magazine.svg"],
+      ["Control Panel", "images/member.svg"],
+      ["Log Out", "images/btn2.png"]];
 
-  const approverLi = [
-  ["Dashboard", "images/dashboard.svg"],
-  ["Membership Zone", "images/Magazine.svg"],
-  ["Control Panel", "images/member.svg"],
-  ["Log Out", "images/btn2.png"]];
-
+      const [loader, setLoader] = useState(false)
 
   useEffect(() => {
     if(session.typeOfUser === "member"){
@@ -51,19 +55,21 @@ const Navbar = ({session, logout}) => {
     }
   }, [])
 
-  const window = true;
+  const windoww = true;
   const [showTooltip, setShowTooltip] = useState(null);
 
   const handleMouseEnter = (index) => {
     setShowTooltip(index);
   };
 
-  const openPage = (index) => {
+  const openPage = async(index) => {
     if(li[index][0].toLowerCase() == "log out"){
       const userConfirmed = window.confirm("Are you sure you want to log out?");
       if (userConfirmed) {
-        logout();
-      }    } else {
+        setLoader(true)
+        await logout();
+        setLoader(false)
+      }} else {
       navigate(li[index][0].toLowerCase())
     }
   }
@@ -75,9 +81,13 @@ const Navbar = ({session, logout}) => {
   const openHome = () => {
     navigate("/")
   }
-
+  if(loader){
+    return (
+      <Loader/>
+    )
+  }else{
   return (
-    <nav className="navbar-menu" style={{ width: window ? 60 : 250 }}>
+    <nav className="navbar-menu" style={{ width: windoww ? 60 : 250 }}>
       <div className="burger">
         <img src="images/title_logo.png" onClick={openHome} alt="burger" />
       </div>
@@ -94,7 +104,7 @@ const Navbar = ({session, logout}) => {
               src={item[1]}
               alt={item[1]}
               style={{
-                paddingLeft: window ? 13 : 27,
+                paddingLeft: windoww ? 13 : 27,
                 paddingRight: "6px",
                 paddingTop: "3px",
                 paddingBottom: "3px",
@@ -102,7 +112,7 @@ const Navbar = ({session, logout}) => {
             />
             <li
               className="navbar__li"
-              style={{ display: window ? "none" : "inline-block" }}
+              style={{ display: windoww ? "none" : "inline-block" }}
             >
               {item[0]}
             </li>
@@ -116,7 +126,9 @@ const Navbar = ({session, logout}) => {
       </ul>
     </nav>
   );
+  }
 };
+
 
 export default connect(
   mapStateToProps,
