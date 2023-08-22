@@ -34,7 +34,8 @@ function Login({ login, session }) {
   const [firstName, setFirstName] = useState("")
   const [lastName, setLastName] = useState("")
   const [email, setEmail] = useState("")
-
+  const [emailExists, setEmailExists] = useState(false);
+  const [numberExists, setNumberExists] = useState(false);
   const [showOTP, setShowOTP] = useState(false)
 
   const [signUpOTP, setSignUpOTP] = useState(false)
@@ -45,6 +46,27 @@ function Login({ login, session }) {
     toggle(!signIn)
     setNumber("")
   }
+
+  const checkEmailAvailability = async () => {
+    try {
+
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/member/check-email/${email}`);
+      console.log(response.data)
+      setEmailExists(response.data.exists);
+    } catch (error) {
+      console.error('Error checking email:', error);
+    }
+  };
+
+  const checkNumberAvailability = async () => {
+    try {
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/member/check-phone/${number}`);
+      console.log(response.data)
+      setNumberExists(response.data.exists);
+    } catch (error) {
+      console.error('Error checking phone:', error);
+    }
+  };
 
   const createMember = async (e) => {
     e.preventDefault()
@@ -112,8 +134,10 @@ function Login({ login, session }) {
                     <Components.Title>Create Account</Components.Title>
                     <Components.Input type='text' placeholder='First Name' value={firstName} onChange={(e) => setFirstName(e.target.value)} />
                     <Components.Input type='text' placeholder='Last Name' value={lastName} onChange={(e) => setLastName(e.target.value)} />
-                    <Components.Input type='email' placeholder='Email' value={email} onChange={(e) => setEmail(e.target.value)} />
-                    <Components.Input type='text' placeholder='Mobile Number' value={number} onChange={(e) => setNumber(e.target.value)}  />
+                    <Components.Input type='email' placeholder='Email' value={email} onChange={(e) => setEmail(e.target.value)} onBlur={checkEmailAvailability} />
+                    {emailExists ? <p style={{color : 'red',fontSize : 12,textAlign : 'left'}}>Memeber With email Already Exist</p> : <p></p>}
+                    <Components.Input type='text' placeholder='Mobile Number' value={number} onChange={(e) => setNumber(e.target.value)} onBlur={checkNumberAvailability} />
+                    {numberExists ? <p style={{color : 'red',fontSize : 12,textAlign : 'left'}}>Memeber With Number Already Exist</p> : <p></p>}
                     <div style={{ padding: '20px 10px' }}>
                     <Components.Button onClick={createMember} >Sign Up</Components.Button>
                     </div>
