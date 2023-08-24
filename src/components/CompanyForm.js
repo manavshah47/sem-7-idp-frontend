@@ -7,16 +7,18 @@ import { toast } from 'react-toastify'
 import { connect } from 'react-redux';
 import Loader from "./Loader";
 
-
 const mapStateToProps = ({ session }) => ({
     session
 })
 
+let initialSubmit = false
 
 const CompanyForm = ({ session }) => {
     const navigate = useNavigate();
 
     const [isDataUpdated, setIsDataUpdated] = useState(false)
+    
+    const [loader, setLoader] = useState(false)
 
     const [formData, setFormData] = useState({
         companyName: '',
@@ -30,7 +32,7 @@ const CompanyForm = ({ session }) => {
     });
 
     const [errors, setErrors] = useState({});
-
+    
     const preLoadData = async () => {
         try {
             const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/membership/membership/${session.memberId}`)
@@ -59,6 +61,9 @@ const CompanyForm = ({ session }) => {
 
     useEffect(() => {
         preLoadData()
+        setTimeout(() => {
+            initialSubmit = true
+        }, 0);
     }, [])
 
     const handleChange = (e) => {
@@ -70,79 +75,193 @@ const CompanyForm = ({ session }) => {
         }));
     };
 
-    const validateForm = () => {
-        let newErrors = {};
-    
+    const validateCompanyName = () => {
+        let str = "";
         if (!formData.companyName.trim()) {
-            newErrors.companyName = 'Company Name is required';
+            str = 'Company Name is required';
         }
         else if (formData.companyName.trim().length < 5) {
-            newErrors.companyName = 'companyName must be at least 5 characters long';
+            str = 'companyName must be at least 5 characters long';
         }
+
+        if(str == ''){
+            setErrors(err => {
+                const { companyName, ...rest } = err
+                return rest;
+            })
+        } else {
+            setErrors(err => ({
+                ...err,
+                companyName:str
+            }))
+        }
+    }
+
+    const validateCompanyAddress = () => {
+        let str = '';
     
         if (!formData.companyAddress.trim()) {
-            newErrors.companyAddress = 'Company Address is required';
+            str = 'Company Address is required';
         }
         else if (formData.companyAddress.trim().length < 5) {
-            newErrors.companyAddress = 'companyAddress must be at least 5 characters long';
+            str = 'companyAddress must be at least 5 characters long';
         }
-    
-        
+
+        if(str == ''){
+            setErrors(err => {
+                const { companyAddress, ...rest } = err
+                return rest;
+            })
+        } else {
+            setErrors(err => ({
+                ...err,
+                companyAddress:str
+            }))
+        }
+    }
+
+    const validateOwnerName = () => {
+        let str = ""
     
         if (!formData.ownerName.trim()) {
-            newErrors.ownerName = 'Owner Name is required';
+            str = 'Owner Name is required';
         }
         else if (formData.ownerName.trim().length < 5) {
-            newErrors.ownerName = 'ownerName must be at least 5 characters long';
+            str = 'ownerName must be at least 5 characters long';
         }
-    
+
+
+        if(str == ''){
+            setErrors(err => {
+                const { ownerName, ...rest } = err
+                return rest;
+            })
+        } else {
+            setErrors(err => ({
+                ...err,
+                ownerName:str
+            }))
+        }
+    }
+
+    const validateCompanyTelephone = () => {
+        let str = "";
     
         if (!formData.companyTelephone.trim()) {
-            newErrors.companyTelephone = 'Company Telephone is required';
+            str = 'Company Telephone is required';
         } else if (!/^\d{10}$/.test(formData.companyTelephone)) {
-            newErrors.companyTelephone = 'Telephone must have 10 digits';
+            str = 'Telephone must have 10 digits';
         }
-    
+
+        if(str == ''){
+            setErrors(err => {
+                const { companyTelephone, ...rest } = err
+                return rest;
+            })
+        } else {
+            setErrors(err => ({
+                ...err,
+                companyTelephone:str
+            }))
+        }
+    }
+
+    const validateCompanyPhone = () => {
+        let str = ""
+
         if (!formData.companyPhone.trim()) {
-            newErrors.companyPhone = 'Company Phone is required';
+            str = 'Company Phone is required';
         } else if (!/^\d{10}$/.test(formData.companyPhone)) {
-            newErrors.companyPhone = 'Phone must have 10 digits';
+            str = 'Phone must have 10 digits';
         }
-    
-        if (formData.companyEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.companyEmail)) {
-            newErrors.companyEmail = 'Invalid email address';
+
+        if(str == ''){
+            setErrors(err => {
+                const { companyPhone, ...rest } = err
+                return rest;
+            })
+        } else {
+            setErrors(err => ({
+                ...err,
+                companyPhone:str
+            }))
         }
-    
-        if (!formData.companyBranch.trim()) {
-            newErrors.companyBranch = 'Company Branch is required';
+    }
+
+    const validateCompanyEmail = () => {
+        let str = '';
+        if (!formData.companyEmail.trim()) {
+            str = 'Company Email is required';
+        }else if (formData.companyEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.companyEmail)) {
+            str = 'Invalid email address';
         }
-        else if (formData.companyBranch.trim().length < 5) {
-            newErrors.companyBranch = 'companyBranch must be at least 5 characters long';
+
+        if(str == ''){
+            setErrors(err => {
+                const { companyEmail, ...rest } = err
+                return rest;
+            })
+        } else {
+            setErrors(err => ({
+                ...err,
+                companyEmail:str
+            }))
         }
-    
-    
-        if (!formData.companyFactory.trim()) {
-            newErrors.companyFactory = 'Company Factory is required';
+    }
+
+    useEffect(() => {
+        if(initialSubmit){
+            validateCompanyName()
         }
+    }, [formData.companyName])
+
+    useEffect(() => {
+        if(initialSubmit){
+            validateCompanyAddress()
+        }
+    }, [formData.companyAddress])
     
-        setErrors(newErrors);
-        return Object.keys(newErrors).length === 0;
-    };
-    
-    const [loader, setLoader] = useState(false)
+    useEffect(() => {
+        if(initialSubmit){
+            validateOwnerName()
+        }
+    }, [formData.ownerName])
+
+    useEffect(() => {
+        if(initialSubmit){
+            validateCompanyPhone()
+        }
+    }, [formData.companyPhone])
+
+    useEffect(() => {
+        if(initialSubmit){
+            validateCompanyTelephone()
+        }
+    }, [formData.companyTelephone])
+
+    useEffect(() => {
+        if(initialSubmit){
+            validateCompanyEmail()
+        }
+    }, [formData.companyEmail])
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log('handleSubmit triggered');
 
-        const isValid = validateForm();
+        validateCompanyName()
+        validateCompanyAddress()
+        validateOwnerName()
+        validateCompanyTelephone()
+        validateCompanyPhone()
+        validateCompanyEmail()
+
         if(!isDataUpdated){
             console.log('Navigating to /company-info-2');
             navigate("/company-info-2")
             return;
         }
     
-        if (isValid) {
+        if (Object.keys(errors).length === 0 && formData.companyAddress != "") {
             setLoader(true)
 
             // withCredentials to send httpOnly cookie via request
@@ -152,13 +271,15 @@ const CompanyForm = ({ session }) => {
             console.log(response.data)
             setLoader(false)
           
-
             if(response.data.success){
                 toast(response.data.message)
                 navigate('/company-info-2');
             } else {
                 toast(response.data.message)
             }
+
+        } else {
+            toast("Enter Correct Input Data")
         }
     };
     

@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { ToastContainer, toast } from "react-toastify";
 
@@ -103,12 +103,20 @@ function Login({ login, session }) {
     setLoader(false)
   }
 
+  useEffect(() => {
+    checkNumberAvailability()
+  }, [number])
+
+  useEffect(() => {
+    checkEmailAvailability()
+  }, [email])
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     setLoader(true)
     try {
       const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/member/send-otp`, {phone:number}, { headers: {"Content-Type":"application/json"}})
+      console.log(response.data)
       if(response.data.success){
         setShowOTP(true)
         toast(response.data.message)
@@ -180,13 +188,10 @@ function Login({ login, session }) {
                     <Components.Input type='text' placeholder='First Name' value={firstName} onChange={(e) => setFirstName(e.target.value)} />
                     {errors.firstName && <p className="error-message"style={{color: 'red', fontSize: '12px'}}>{errors.firstName}</p>}
                     <Components.Input type='text' placeholder='Last Name' value={lastName} onChange={(e) => setLastName(e.target.value)} />
-                    {errors.lastName && <p className="error-message"style={{color: 'red', fontSize: '12px'}}>{errors.lastName}</p>}
-                    <Components.Input type='email' placeholder='Email' value={email} onChange={(e) => setEmail(e.target.value)} onBlur={checkEmailAvailability} />
-                    {errors.email && <p className="error-message"style={{color: 'red', fontSize: '12px'}}>{errors.email}</p>}
-                    {emailExists ? <p style={{color : 'red',fontSize : 12,textAlign : 'left'}}>Memeber With email Already Exist</p> : <p></p>}
-                    <Components.Input type='text' placeholder='Mobile Number' value={number} onChange={(e) => setNumber(e.target.value)} onBlur={checkNumberAvailability} />
-                    {errors.number && <p className="error-message"style={{color: 'red', fontSize: '12px'}}>{errors.number}</p>}
-                    {numberExists ? <p style={{color : 'red',fontSize : 12,textAlign : 'left'}}>Memeber With Number Already Exist</p> : <p></p>}
+                    <Components.Input type='email' placeholder='Email' value={email} onChange={(e) => setEmail(e.target.value)} />
+                    {emailExists ? <p style={{color : 'red',fontSize : 12,textAlign : 'left'}}>Member With Email Already Exist</p> : <p></p>}
+                    <Components.Input type='text' placeholder='Mobile Number' value={number} onChange={(e) => setNumber(e.target.value)} />
+                    {numberExists ? <p style={{color : 'red',fontSize : 12,textAlign : 'left'}}>Member With Number Already Exist</p> : <p></p>}
                     <div style={{ padding: '20px 10px' }}>
                     <Components.Button onClick={createMember} >Sign Up</Components.Button>
                     </div>

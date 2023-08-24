@@ -14,6 +14,8 @@ const mapStateToProps = ({ session }) => ({
     session
 })
 
+let initialSubmit = false
+
 const CompanyForm = ({session}) => {
     const [isDataUpdated, setIsDataUpdated] = useState(false)
 
@@ -61,57 +63,204 @@ const CompanyForm = ({session}) => {
 
     useEffect(() => {
         preLoadData()
+        setTimeout(() => {
+            initialSubmit = true
+        }, 0);
     }, [])
 
-    const validateForm = () => {
-        let newErrors = {};
-    
+    const validateCompanyType = () => {
+        let str = "";
         if (!formData.companyType.trim()) {
-            newErrors.companyType = 'Company Type is required';
+            str = 'companyType is required';
         }
         else if (formData.companyType.trim().length < 5) {
-            newErrors.companyType = 'Company Type must be at least 5 characters long';
-        }
-    
-        if (!formData.registrationYear.trim()) {
-            newErrors.registrationYear = 'Registration Date is required';
-        }
-    
-        if (!formData.panNumber.trim()) {
-            newErrors.panNumber = 'PAN Number is required';
-        } 
-        else if (!/^([A-Z]){5}([0-9]){4}([A-Z]){1}$/.test(formData.panNumber)) {
-            newErrors.panNumber = 'Invalid PAN number format.';
-        }
-    
-        if (!formData.cinNumber.trim()) {
-            newErrors.cinNumber = 'CIN Number is required';
-        } 
-        else if (!/^([A-Z]){1}([0-9]){5}([A-Z]){2}([0-9]){4}([A-Z]){3}([0-9]){6}$/.test(formData.cinNumber)) {
-            newErrors.cinNumber = 'Invalid CIN number format.';
-        }
-    
-        if (!formData.registrationProofName.trim()) {
-            newErrors.registrationProofName = 'Registration Proof Name is required';
-        }
-    
-        if (!formData.gstNumber.trim()) {
-            newErrors.gstNumber = 'GST Number is required';
-        } 
-        else if (!/^\d{2}[A-Z]{5}\d{4}[A-Z]{1}\d[Z]{1}[A-Z\d]{1}$/.test(formData.gstNumber)) {
-            newErrors.gstNumber = 'Invalid GST number format.';
-        }
-        
-        if (!formData.file) {
-            newErrors.file = 'Registration Proof is required';
-        } 
-        else if (!(formData.file?.type === 'application/pdf' || formData.file.includes("https://idp-sem-7.s3.us-east-1.amazonaws.com"))) {
-            newErrors.file = 'File must be in PDF format.';
+            str = 'companyType must be at least 5 characters long';
         }
 
-        setErrors(newErrors);
-        return Object.keys(newErrors).length === 0
+        if(str == ''){
+            setErrors(err => {
+                const { companyType, ...rest } = err
+                return rest;
+            })
+        } else {
+            setErrors(err => ({
+                ...err,
+                companyType:str
+            }))
+        }
+    }
+
+    const validateRegistrationYear = () => {
+        let str = "";
+        if (!formData.registrationYear.trim()) {
+            str = 'Registration Date is required';
+        }
+
+        if(str == ''){
+            setErrors(err => {
+                const { registrationYear, ...rest } = err
+                return rest;
+            })
+        } else {
+            setErrors(err => ({
+                ...err,
+                registrationYear:str
+            }))
+        }
+    }
+
+    const validatePanNumber = () => {
+        let str = "";
+        if (!formData.panNumber.trim()) {
+            str = 'PAN Number is required';
+        } 
+        else if (!/^([A-Z]){5}([0-9]){4}([A-Z]){1}$/.test(formData.panNumber)) {
+            str = 'Invalid PAN number format.';
+        }
+
+        if(str == ''){
+            setErrors(err => {
+                const { panNumber, ...rest } = err
+                return rest;
+            })
+        } else {
+            setErrors(err => ({
+                ...err,
+                panNumber:str
+            }))
+        }
+    }
+    
+    const validateCinNumber = () => {
+        let str = "";
+        if (!formData.cinNumber.trim()) {
+            str = 'CIN Number is required';
+        } 
+        else if (!/^([A-Z]){1}([0-9]){5}([A-Z]){2}([0-9]){4}([A-Z]){3}([0-9]){6}$/.test(formData.cinNumber)) {
+            str = 'Invalid CIN number format.';
+        }
+
+        if(str == ''){
+            setErrors(err => {
+                const { cinNumber, ...rest } = err
+                return rest;
+            })
+        } else {
+            setErrors(err => ({
+                ...err,
+                cinNumber:str
+            }))
+        }
+    }
+
+    const validateRegistrationProofName = () => {
+        let str = "";
+        if (!formData.registrationProofName.trim()) {
+            str = 'Registration Proof Name is required';
+        }
+
+        if(str == ''){
+            setErrors(err => {
+                const { registrationProofName, ...rest } = err
+                return rest;
+            })
+        } else {
+            setErrors(err => ({
+                ...err,
+                registrationProofName:str
+            }))
+        }
+    }
+    
+    const validateGstNumber = () => {
+        let str = "";
+        if (!formData.gstNumber.trim()) {
+            str = 'GST Number is required';
+        } 
+        else if (!/^\d{2}[A-Z]{5}\d{4}[A-Z]{1}\d[Z]{1}[A-Z\d]{1}$/.test(formData.gstNumber)) {
+            str = 'Invalid GST number format.';
+        }
+
+        if(str == ''){
+            setErrors(err => {
+                const { gstNumber, ...rest } = err
+                return rest;
+            })
+        } else {
+            setErrors(err => ({
+                ...err,
+                gstNumber:str
+            }))
+        }
+    }
+
+
+    const validateFile = () => {
+        let str = "";
+
+        if (!formData.file) {
+            str = 'Registration Proof is required';
+        } 
+        else if (!(formData.file?.type === 'application/pdf' || formData.file.includes("https://idp-sem-7.s3.us-east-1.amazonaws.com"))) {
+            str = 'File must be in PDF format.';
+        }
+
+        if(str == ''){
+            setErrors(err => {
+                const { file, ...rest } = err
+                return rest;
+            })
+        } else {
+            setErrors(err => ({
+                ...err,
+                file:str
+            }))
+        }
     };
+
+    useEffect(() => {
+        if(initialSubmit){
+            validateGstNumber()
+        }
+    }, [formData.gstNumber])
+    
+    useEffect(() => {
+        if(initialSubmit){
+            validateCinNumber()
+        }
+    }, [formData.cinNumber])
+   
+    useEffect(() => {
+        if(initialSubmit){
+            validatePanNumber()
+        }
+    }, [formData.panNumber])
+    
+    useEffect(() => {
+        if(initialSubmit){
+            validateCompanyType()
+        }
+    }, [formData.companyType])
+    
+    useEffect(() => {
+        if(initialSubmit){
+            validateRegistrationProofName()
+        }
+    }, [formData.registrationProofName])
+
+    
+    useEffect(() => {
+        if(initialSubmit){
+            validateFile()
+        }
+    }, [formData.file])
+    
+    useEffect(() => {
+        if(initialSubmit){
+            validateRegistrationYear()
+        }
+    }, [formData.registrationYear])
+
     
     const handleChange = (e) => {
         setIsDataUpdated(true)
@@ -135,11 +284,17 @@ const CompanyForm = ({session}) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const isValid = validateForm();
+        validateCinNumber()
+        validateGstNumber()
+        validatePanNumber()
+        validateCompanyType()
+        validateFile()
+        validateRegistrationProofName()
+        validateRegistrationYear()
 
-        console.log("validation: ", isValid)
+        let isValid = Object.keys(errors).length === 0
 
-        if(!isDataUpdated && isValid){
+        if(!isDataUpdated && isValid && formData.cinNumber != ""){
             // 'Navigating to /company-info-3 as data is not updated';
             navigate("/company-info-3")
             return;
