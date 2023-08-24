@@ -18,6 +18,7 @@ import { Header } from "./Header";
 import { Link } from "react-router-dom";
 import Loader from "./Loader";
 
+
 const mapStateToProps = ({ session }) => ({
   session
 });
@@ -25,6 +26,8 @@ const mapStateToProps = ({ session }) => ({
 const mapDispatchToProps = dispatch => ({
   login: user => dispatch(logInUser(user))
 })
+
+
 
 function Login({ login, session }) {
   const [signIn, toggle] = useState(true);
@@ -46,6 +49,9 @@ function Login({ login, session }) {
     toggle(!signIn)
     setNumber("")
   }
+
+  const [errors, setErrors] = useState({});
+
 
   const checkEmailAvailability = async () => {
     try {
@@ -71,14 +77,18 @@ function Login({ login, session }) {
   const createMember = async (e) => {
     e.preventDefault()
     setLoader(true)
-    const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/member/create-member`, { firstName, lastName, email, phone: number }, { headers: {"Content-Type":"application/json"}})
-    console.log(response.data)
-    if(response.data.success){
-      toast(response.data.message)
-      setSignUpOTP(true)
-    } else {
-      toast(response.data.message)
+    const isValid = validateForm();
+    if(isValid){
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/member/create-member`, { firstName, lastName, email, phone: number }, { headers: {"Content-Type":"application/json"}})
+      console.log(response.data)
+      if(response.data.success){
+        toast(response.data.message)
+        setSignUpOTP(true)
+      } else {
+        toast(response.data.message)
+      }
     }
+   
     setLoader(false)
   }
 
@@ -111,6 +121,41 @@ function Login({ login, session }) {
     setLoader(false)
   }
 
+  const validateForm = () => {
+    let newErrors = {};
+  
+    if (!firstName.trim()) {
+      newErrors.firstName = 'firstName is required';
+    }
+    else if (firstName.trim().length < 2) {
+      newErrors.firstName = 'firstName must be 2 characters long';
+    }
+  
+    if (!lastName.trim()) {
+      newErrors.lastName = 'lastName is required';
+    }
+    else if(lastName.trim().length < 3) {
+      newErrors.lastName = 'lastName must be 3 characters long';
+    }
+
+    if (!email.trim()) {
+      newErrors.email = 'email is required';
+    }
+    else if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      newErrors.email = 'email must be valid';
+    }
+
+    if (!number.trim()) {
+      newErrors.number = 'number is required';
+  } else if (!/^\d{10}$/.test(number)) {
+      newErrors.number = 'number must have 10 digits';
+  }
+
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0
+  }
+
   if(loader){
     return (
       <Loader/>
@@ -123,8 +168,8 @@ function Login({ login, session }) {
            <Components.SignUpContainer signinIn={signIn}>
                {signUpOTP ?
                 <Components.Form>
-                <Components.Title style={{ color: '#0f3c69' }}>Sign in</Components.Title>
-                  <div style={{ padding: '20px 10px' }}> 
+                <Components.Title style={{ color: '#0f3c69',marginTop: 45 }}>Sign in</Components.Title>
+                  <div style={{ padding: '20px 10px 7px 10px', marginTop : 45}}> 
                   <Components.Input type='text' placeholder='Enter OTP' value={otp} onChange={(e) => setOtp(e.target.value)}  />
                   </div>
                   <Components.Button onClick={handleOtpSubmit}>Verify OTP</Components.Button>
@@ -133,10 +178,14 @@ function Login({ login, session }) {
                 <Components.Form>
                     <Components.Title>Create Account</Components.Title>
                     <Components.Input type='text' placeholder='First Name' value={firstName} onChange={(e) => setFirstName(e.target.value)} />
+                    {errors.firstName && <p className="error-message"style={{color: 'red', fontSize: '12px'}}>{errors.firstName}</p>}
                     <Components.Input type='text' placeholder='Last Name' value={lastName} onChange={(e) => setLastName(e.target.value)} />
+                    {errors.lastName && <p className="error-message"style={{color: 'red', fontSize: '12px'}}>{errors.lastName}</p>}
                     <Components.Input type='email' placeholder='Email' value={email} onChange={(e) => setEmail(e.target.value)} onBlur={checkEmailAvailability} />
+                    {errors.email && <p className="error-message"style={{color: 'red', fontSize: '12px'}}>{errors.email}</p>}
                     {emailExists ? <p style={{color : 'red',fontSize : 12,textAlign : 'left'}}>Memeber With email Already Exist</p> : <p></p>}
                     <Components.Input type='text' placeholder='Mobile Number' value={number} onChange={(e) => setNumber(e.target.value)} onBlur={checkNumberAvailability} />
+                    {errors.number && <p className="error-message"style={{color: 'red', fontSize: '12px'}}>{errors.number}</p>}
                     {numberExists ? <p style={{color : 'red',fontSize : 12,textAlign : 'left'}}>Memeber With Number Already Exist</p> : <p></p>}
                     <div style={{ padding: '20px 10px' }}>
                     <Components.Button onClick={createMember} >Sign Up</Components.Button>
@@ -151,8 +200,8 @@ function Login({ login, session }) {
                 </div>
                 {showOTP ? 
                 <Components.Form>
-                <Components.Title style={{ color: 'black' }}>Sign In</Components.Title>
-                  <div style={{ padding: '20px 10px' }}> 
+                <Components.Title style={{ color: '#0f3c69'}}>Sign In</Components.Title>
+                  <div style={{ padding: '20px 10px'}}> 
                   <Components.Input type='text' placeholder='Enter OTP' value={otp} onChange={(e) => setOtp(e.target.value)}  />
                   </div>
                   <Components.Button onClick={handleOtpSubmit}>Verify OTP</Components.Button>
