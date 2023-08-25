@@ -14,6 +14,8 @@ const mapStateToProps = ({ session }) => ({
     session
 })
 
+let initialSubmit = false
+
 const CompanyForm3 = ({session}) => {
     const [isDataUpdated, setIsDataUpdated] = useState(false)
 
@@ -65,6 +67,9 @@ const CompanyForm3 = ({session}) => {
 
     useEffect(() => {
         preLoadData();
+        setTimeout(() => {
+            initialSubmit = true
+        }, 0);
     }, [])
 
     const handleChange = (e) => {
@@ -98,76 +103,200 @@ const CompanyForm3 = ({session}) => {
         }
     };
 
-    const validateForm = () => {
-        let newErrors = {};
-    
+    const validateProductName = () => {
+        let str = "";
+        
         // Add validation rules here if needed
         if (!formData.productName) {
-            newErrors.productName = "Product Name is required";
+            str = "Product Name is required";
         }
         else if (formData.productName.trim().length < 5) {
-            newErrors.productName = 'Should be 5 characters long';
+            str = 'Should be 5 characters long';
         }
-    
+
+        if(str == ''){
+            setErrors(err => {
+                const { productName, ...rest } = err
+                return rest;
+            })
+        } else {
+            setErrors(err => ({
+                ...err,
+                productName:str
+            }))
+        }
+    }
+
+    const validateProductUnit = () => {
+        let str = "";
+        
         if (!formData.productUnit) {
-            newErrors.productUnit = "Unit Manufactured is required";
+            str = "Unit Manufactured is required";
         }
         else if (isNaN(formData.productUnit)) {
-            newErrors.productUnit = "Unit Manufactured must be a number";
-        }
-    
-        if (!formData.productCapacity) {
-            newErrors.productCapacity = "productCapacity is required";
-        }else if (isNaN(formData.productCapacity)) {
-            newErrors.productCapacity = "productCapacity must be a number";
-        }
-    
-        if (!formData.companyERDAObjective) {
-            newErrors.companyERDAObjective = "Objective For Membership is required";
-        }
-    
-        if (formData.companyERDARequiredServices.length === 0) {
-            newErrors.companyERDARequiredServices = "Select at least one ERDA Service";
-        }
-    
-        if (!formData.typeOfMembership) {
-            newErrors.typeOfMembership = "Select a Type of Membership";
-        }
-    
-        if (!formData.companyTurnOverRange) {
-            newErrors.companyTurnOverRange = "Select a Company Turnover Range";
+            str = "Unit Manufactured must be a number";
         }
 
+        if(str == ''){
+            setErrors(err => {
+                const { productUnit, ...rest } = err
+                return rest;
+            })
+        } else {
+            setErrors(err => ({
+                ...err,
+                productUnit:str
+            }))
+        }
+    }
+
+    const validateProductCapacity = () => {
+        let str = "";
+        
+        if (!formData.productCapacity) {
+            str = "productCapacity is required";
+        }else if (isNaN(formData.productCapacity)) {
+            str = "productCapacity must be a number";
+        }
+
+        if(str == ''){
+            setErrors(err => {
+                const { productCapacity, ...rest } = err
+                return rest;
+            })
+        } else {
+            setErrors(err => ({
+                ...err,
+                productCapacity:str
+            }))
+        }
+    }
+
+    const validateCompanyERDAObjective = () => {
+        let str = "";
+        
+        if (!formData.companyERDAObjective) {
+            str = "Objective For Membership is required";
+        }
+
+        if(str == ''){
+            setErrors(err => {
+                const { companyERDAObjective, ...rest } = err
+                return rest;
+            })
+        } else {
+            setErrors(err => ({
+                ...err,
+                companyERDAObjective:str
+            }))
+        }
+    }
+
+    const validateCompanyERDARequiredServices  = () => {
+        let str = "";
+        
+        if (formData.companyERDARequiredServices.length === 0) {
+            str = "Select at least one ERDA Service";
+        }
+
+        if(str == ''){
+            setErrors(err => {
+                const { companyERDARequiredServices, ...rest } = err
+                return rest;
+            })
+        } else {
+            setErrors(err => ({
+                ...err,
+                companyERDARequiredServices:str
+            }))
+        }
+    }
+
+    const validateTypeOfMembership  = () => {
+        let str = "";
+        
+        if (!formData.typeOfMembership) {
+            str = "Select a Type of Membership";
+        }
+
+        if(str == ''){
+            setErrors(err => {
+                const { typeOfMembership, ...rest } = err
+                return rest;
+            })
+        } else {
+            setErrors(err => ({
+                ...err,
+                typeOfMembership:str
+            }))
+        }
+    }
+
+    const validateCompanyTurnOverRange  = () => {
+        let str = "";
+        
+        if (!formData.companyTurnOverRange) {
+            str = "Select a Company Turnover Range";
+        }
+
+        if(str == ''){
+            setErrors(err => {
+                const { companyTurnOverRange, ...rest } = err
+                return rest;
+            })
+        } else {
+            setErrors(err => ({
+                ...err,
+                companyTurnOverRange:str
+            }))
+        }
+    }
+
+    const validateFile  = () => {
+        let str = "";
+        
         if (!formData.file) {
-            newErrors.file = 'Turn Over Sheet is required';
+            str = 'Turn Over Sheet is required';
         } 
         else if (!(formData.file?.type == 'application/pdf' || formData.file.includes("https://idp-sem-7.s3.us-east-1.amazonaws.com"))) {
-            newErrors.file = 'File must be in PDF format.';
+            str = 'File must be in PDF format.';
         }
 
-        setErrors(newErrors);
-        return Object.keys(newErrors).length === 0;
-    };
+        if(str == ''){
+            setErrors(err => {
+                const { file, ...rest } = err
+                return rest;
+            })
+        } else {
+            setErrors(err => ({
+                ...err,
+                file:str
+            }))
+        }
+    }
 
-    useEffect(() => {
-        console.log(errors)
-    }, [errors])
-    
     const [loader, setLoader] = useState(false)
 
 
     const handleSubmit = async (e) => {
         e.preventDefault();
     
-        const isValid = validateForm();
+        validateCompanyERDAObjective()
+        validateCompanyERDARequiredServices()
+        validateCompanyTurnOverRange()
+        validateProductName()
+        validateProductUnit()
+        validateProductCapacity()
+
+        let isValid = Object.keys(errors).length ===  0
     
-        if (!isDataUpdated && isValid) {
+        if (!isDataUpdated && isValid && formData.productName != "") {
             // Go to the show data page as no data is updated, and previous inserted data is correct
             navigate("/membership-status");
             return;
         }
     
-        if (isValid) {
+        if (isValid & formData.productName != "") {
             // Show a confirmation alert before submitting
             const confirmSubmission = window.confirm(
                 "Are you sure you want to submit? You won't be able to edit this information later."
@@ -202,6 +331,8 @@ const CompanyForm3 = ({session}) => {
                     navigate("/membership-status");
                 }
             }
+        } else {
+            toast("Enter Valid Data")
         }
     };
     
