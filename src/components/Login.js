@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 
 import { ToastContainer, toast } from "react-toastify";
@@ -18,6 +17,7 @@ import { Header } from "./Header";
 import { Link } from "react-router-dom";
 import Loader from "./Loader";
 
+
 const mapStateToProps = ({ session }) => ({
   session
 });
@@ -25,6 +25,8 @@ const mapStateToProps = ({ session }) => ({
 const mapDispatchToProps = dispatch => ({
   login: user => dispatch(logInUser(user))
 })
+
+let initialSubmit = false
 
 function Login({ login, session }) {
   const [signIn, toggle] = useState(true);
@@ -46,6 +48,9 @@ function Login({ login, session }) {
     toggle(!signIn)
     setNumber("")
   }
+
+  const [errors, setErrors] = useState({});
+
 
   const checkEmailAvailability = async () => {
     try {
@@ -71,14 +76,26 @@ function Login({ login, session }) {
   const createMember = async (e) => {
     e.preventDefault()
     setLoader(true)
-    const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/member/create-member`, { firstName, lastName, email, phone: number }, { headers: {"Content-Type":"application/json"}})
-    console.log(response.data)
-    if(response.data.success){
-      toast(response.data.message)
-      setSignUpOTP(true)
+
+    validateEmail()
+    validateFirstName()
+    validateLastName()
+    validateNumber()
+
+    const isValid = Object.keys(errors).length === 0;
+    if(isValid && number != ""){
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/member/create-member`, { firstName, lastName, email, phone: number }, { headers: {"Content-Type":"application/json"}})
+      console.log(response.data)
+      if(response.data.success){
+        toast(response.data.message)
+        setSignUpOTP(true)
+      } else {
+        toast(response.data.message)
+      }
     } else {
-      toast(response.data.message)
+      toast("Enter Valid Data")
     }
+   
     setLoader(false)
   }
 
@@ -119,6 +136,128 @@ function Login({ login, session }) {
     setLoader(false)
   }
 
+  const validateFirstName = () => {
+    let str = "";
+    
+    if (!firstName.trim()) {
+      str = 'firstName is required';
+    }
+    else if (firstName.trim().length < 2) {
+      str = 'firstName must be 2 characters long';
+    }
+
+    if(str == ''){
+        setErrors(err => {
+            const { firstName, ...rest } = err
+            return rest;
+        })
+    } else {
+        setErrors(err => ({
+            ...err,
+            firstName:str
+        }))
+    }
+  }
+
+  const validateLastName = () => {
+    let str = "";
+    
+    if (!lastName.trim()) {
+      str = 'lastName is required';
+    }
+    else if(lastName.trim().length < 3) {
+      str = 'lastName must be 3 characters long';
+    }
+
+    if(str == ''){
+        setErrors(err => {
+            const { lastName, ...rest } = err
+            return rest;
+        })
+    } else {
+        setErrors(err => ({
+            ...err,
+            lastName:str
+        }))
+    }
+  }
+
+  const validateEmail = () => {
+    let str = "";
+    
+    if (!email.trim()) {
+      str = 'email is required';
+    }
+    else if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      str = 'email must be valid';
+    }
+
+    if(str == ''){
+        setErrors(err => {
+            const { email, ...rest } = err
+            return rest;
+        })
+    } else {
+        setErrors(err => ({
+            ...err,
+            email:str
+        }))
+    }
+  }
+  
+  const validateNumber = () => {
+    let str = "";
+    
+    if (!number.trim()) {
+        str = 'number is required';
+    } else if (!/^\d{10}$/.test(number)) {
+        str = 'number must have 10 digits';
+    }
+
+    if(str == ''){
+        setErrors(err => {
+            const { number, ...rest } = err
+            return rest;
+        })
+    } else {
+        setErrors(err => ({
+            ...err,
+            number:str
+        }))
+    }
+  }
+
+  useEffect(() => {
+    if(initialSubmit){
+        validateEmail()
+    }
+  }, [email])
+
+  useEffect(() => {
+    if(initialSubmit){
+        validateFirstName()
+    }
+  }, [firstName])
+
+  useEffect(() => {
+    if(initialSubmit){
+        validateLastName()
+    }
+  }, [lastName])
+
+  useEffect(() => {
+    if(initialSubmit){
+        validateNumber()
+    }
+  }, [number])
+
+
+  useEffect(() => {
+    setTimeout(() => {
+      initialSubmit = true
+    }, 0);
+  }, [])
+
   if(loader){
     return (
       <Loader/>
@@ -131,8 +270,8 @@ function Login({ login, session }) {
            <Components.SignUpContainer signinIn={signIn}>
                {signUpOTP ?
                 <Components.Form>
-                <Components.Title style={{ color: '#0f3c69' }}>Sign in</Components.Title>
-                  <div style={{ padding: '20px 10px' }}> 
+                <Components.Title style={{ color: '#0f3c69',marginTop: 45 }}>Sign in</Components.Title>
+                  <div style={{ padding: '20px 10px 7px 10px', marginTop : 45}}> 
                   <Components.Input type='text' placeholder='Enter OTP' value={otp} onChange={(e) => setOtp(e.target.value)}  />
                   </div>
                   <Components.Button onClick={handleOtpSubmit}>Verify OTP</Components.Button>
@@ -141,10 +280,14 @@ function Login({ login, session }) {
                 <Components.Form>
                     <Components.Title>Create Account</Components.Title>
                     <Components.Input type='text' placeholder='First Name' value={firstName} onChange={(e) => setFirstName(e.target.value)} />
+                    {errors.firstName && <p className="error-message"style={{color: 'red', fontSize: '12px'}}>{errors.firstName}</p>}
                     <Components.Input type='text' placeholder='Last Name' value={lastName} onChange={(e) => setLastName(e.target.value)} />
+                    {errors.lastName && <p className="error-message"style={{color: 'red', fontSize: '12px'}}>{errors.lastName}</p>}
                     <Components.Input type='email' placeholder='Email' value={email} onChange={(e) => setEmail(e.target.value)} />
+                    {errors.email && <p className="error-message"style={{color: 'red', fontSize: '12px'}}>{errors.email}</p>}
                     {emailExists ? <p style={{color : 'red',fontSize : 12,textAlign : 'left'}}>Member With Email Already Exist</p> : <p></p>}
                     <Components.Input type='text' placeholder='Mobile Number' value={number} onChange={(e) => setNumber(e.target.value)} />
+                    {errors.number && <p className="error-message"style={{color: 'red', fontSize: '12px'}}>{errors.number}</p>}
                     {numberExists ? <p style={{color : 'red',fontSize : 12,textAlign : 'left'}}>Member With Number Already Exist</p> : <p></p>}
                     <div style={{ padding: '20px 10px' }}>
                     <Components.Button onClick={createMember} >Sign Up</Components.Button>
@@ -159,8 +302,8 @@ function Login({ login, session }) {
                 </div>
                 {showOTP ? 
                 <Components.Form>
-                <Components.Title style={{ color: 'black' }}>Sign In</Components.Title>
-                  <div style={{ padding: '20px 10px' }}> 
+                <Components.Title style={{ color: '#0f3c69'}}>Sign In</Components.Title>
+                  <div style={{ padding: '20px 10px'}}> 
                   <Components.Input type='text' placeholder='Enter OTP' value={otp} onChange={(e) => setOtp(e.target.value)}  />
                   </div>
                   <Components.Button onClick={handleOtpSubmit}>Verify OTP</Components.Button>
@@ -170,6 +313,7 @@ function Login({ login, session }) {
                 <Components.Title style={{ color: '#0f3c69' }}>Sign In</Components.Title>
                     <div style={{ padding: '20px 10px' }}> 
                     <Components.Input type='text' placeholder='Mobile Number' value={number} onChange={(e) => setNumber(e.target.value)}  />
+                    {errors.number && <p className="error-message"style={{color: 'red', fontSize: '12px'}}>{errors.number}</p>}
                     </div>
                     <Components.Button onClick={handleSubmit}>Get OTP</Components.Button>
                     <Link to="/login" className="font-blue text-right absolute bottom-0"><u className="font-blue"> Employee Login </u></Link>
