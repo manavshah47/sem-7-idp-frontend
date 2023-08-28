@@ -37,7 +37,7 @@ const MembershipStatus = ({ session }) => {
     }, [])
 
     return (
-        <div className='' style={{paddingLeft:"100px"}}>
+        <div className='' style={{paddingLeft:"100px", height:'100vh', overflow:'scroll'}}>
             <p className='text-black'>Form 1</p>
             <p className='text-black'>Company Name: {data.companyName}</p>
             <p className='text-black'>Company Address: {data.companyAddress}</p>

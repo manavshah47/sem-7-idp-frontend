@@ -275,6 +275,56 @@ const CompanyForm3 = ({session}) => {
         }
     }
 
+    useEffect(() => {
+        if(initialSubmit){
+            validateCompanyERDAObjective()
+        }
+    }, [formData.companyERDAObjective])
+    
+    useEffect(() => {
+        if(initialSubmit){
+            validateCompanyERDARequiredServices()
+        }
+    }, [formData.companyERDARequiredServices])
+    
+    useEffect(() => {
+        if(initialSubmit){
+            validateCompanyTurnOverRange()
+        }
+    }, [formData.companyTurnOverRange])
+    
+    useEffect(() => {
+        if(initialSubmit){
+            validateProductName()
+        }
+    }, [formData.productName])
+    
+    useEffect(() => {
+        if(initialSubmit){
+            validateProductCapacity()
+        }
+    }, [formData.productCapacity])
+    
+    useEffect(() => {
+        if(initialSubmit){
+            validateProductUnit()
+        }
+    }, [formData.productUnit])
+
+    useEffect(() => {
+        if(initialSubmit){
+            validateFile()
+        }
+    }, [formData.file])
+
+    useEffect(() => {
+        if(initialSubmit){
+            validateTypeOfMembership()
+        }
+    }, [formData.typeOfMembership])
+
+    
+
     const [loader, setLoader] = useState(false)
 
 
