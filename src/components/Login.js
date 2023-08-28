@@ -32,6 +32,7 @@ function Login({ login, session }) {
   const [signIn, toggle] = useState(true);
   const [ number, setNumber ] = useState("")
   const [otp, setOtp] = useState("")
+  const [phone, setPhone] = useState("")
 
   const [firstName, setFirstName] = useState("")
   const [lastName, setLastName] = useState("")
@@ -39,6 +40,7 @@ function Login({ login, session }) {
   const [emailExists, setEmailExists] = useState(false);
   const [numberExists, setNumberExists] = useState(false);
   const [showOTP, setShowOTP] = useState(false)
+
 
   const [signUpOTP, setSignUpOTP] = useState(false)
 
@@ -73,7 +75,7 @@ function Login({ login, session }) {
     }
   };
 
-  const createMember = async (e) => {
+  const verifyOtpAndCreateMember = async (e) => {
     e.preventDefault()
     setLoader(true)
 
@@ -84,18 +86,16 @@ function Login({ login, session }) {
 
     const isValid = Object.keys(errors).length === 0;
     if(isValid && number != ""){
-      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/member/create-member`, { firstName, lastName, email, phone: number }, { headers: {"Content-Type":"application/json"}})
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/member/create-member`, { firstName, lastName, email, phone: number, otp }, { headers: {"Content-Type":"application/json"}})
       console.log(response.data)
       if(response.data.success){
         toast(response.data.message)
-        setSignUpOTP(true)
       } else {
         toast(response.data.message)
       }
     } else {
       toast("Enter Valid Data")
     }
-   
     setLoader(false)
   }
 
@@ -103,7 +103,7 @@ function Login({ login, session }) {
     e.preventDefault()
     setLoader(true)
     const user = {
-      id:number,
+      id:phone,
       password:otp
     }
     await login(user)
@@ -118,14 +118,34 @@ function Login({ login, session }) {
     checkEmailAvailability()
   }, [email])
 
+
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     setLoader(true)
     try {
-      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/member/send-otp`, {phone:number}, { headers: {"Content-Type":"application/json"}})
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/member/send-otp`, {phone}, { headers: {"Content-Type":"application/json"}})
       console.log(response.data)
       if(response.data.success){
         setShowOTP(true)
+        toast(response.data.message)
+      } else {
+        toast(response.data.message, { position:'top-center' })
+      }
+    } catch (error) {
+      console.log(error)
+    }
+    setLoader(false)
+  }
+
+  const sendEmail = async (e) => {
+    e.preventDefault()
+    setLoader(true)
+    try {
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/member/send-email`, { email, firstName, lastName }, { headers: {"Content-Type":"application/json"}})
+      console.log(response.data)
+      if(response.data.success){
+        setSignUpOTP(true)
         toast(response.data.message)
       } else {
         toast(response.data.message, { position:'top-center' })
@@ -270,11 +290,11 @@ function Login({ login, session }) {
            <Components.SignUpContainer signinIn={signIn}>
                {signUpOTP ?
                 <Components.Form>
-                <Components.Title style={{ color: '#0f3c69',marginTop: 45 }}>Sign in</Components.Title>
+                <Components.Title style={{ color: '#0f3c69',marginTop: 45 }}>Verify Email</Components.Title>
                   <div style={{ padding: '20px 10px 7px 10px', marginTop : 45}}> 
                   <Components.Input type='text' placeholder='Enter OTP' value={otp} onChange={(e) => setOtp(e.target.value)}  />
                   </div>
-                  <Components.Button onClick={handleOtpSubmit}>Verify OTP</Components.Button>
+                  <Components.Button onClick={verifyOtpAndCreateMember}>SUBMIT</Components.Button>
                 </Components.Form>
                 :
                 <Components.Form>
@@ -290,7 +310,7 @@ function Login({ login, session }) {
                     {errors.number && <p className="error-message"style={{color: 'red', fontSize: '12px'}}>{errors.number}</p>}
                     {numberExists ? <p style={{color : 'red',fontSize : 12,textAlign : 'left'}}>Member With Number Already Exist</p> : <p></p>}
                     <div style={{ padding: '20px 10px' }}>
-                    <Components.Button onClick={createMember} >Sign Up</Components.Button>
+                    <Components.Button onClick={sendEmail} >Sign Up</Components.Button>
                     </div>
                 </Components.Form>
               }
@@ -312,8 +332,8 @@ function Login({ login, session }) {
                 <Components.Form>
                 <Components.Title style={{ color: '#0f3c69' }}>Sign In</Components.Title>
                     <div style={{ padding: '20px 10px' }}> 
-                    <Components.Input type='text' placeholder='Mobile Number' value={number} onChange={(e) => setNumber(e.target.value)}  />
-                    {errors.number && <p className="error-message"style={{color: 'red', fontSize: '12px'}}>{errors.number}</p>}
+                    <Components.Input type='text' placeholder='Mobile Number' value={phone} onChange={(e) => setPhone(e.target.value)}  />
+                    {errors.phone && <p className="error-message"style={{color: 'red', fontSize: '12px'}}>{errors.phone}</p>}
                     </div>
                     <Components.Button onClick={handleSubmit}>Get OTP</Components.Button>
                     <Link to="/login" className="font-blue text-right absolute bottom-0"><u className="font-blue"> Employee Login </u></Link>
