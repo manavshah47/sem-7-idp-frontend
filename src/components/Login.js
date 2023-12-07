@@ -338,7 +338,7 @@ function Login({ login, session }) {
                     {errors.phone && <p className="error-message"style={{color: 'red', fontSize: '12px'}}>{errors.phone}</p>}
                     </div>
                     <Components.Button onClick={handleSubmit}>Get OTP</Components.Button>
-                    <a href="http://localhost:3001/api/admin/login" className="font-blue text-right absolute bottom-0"><u className="font-blue"> Admin Login </u></a>
+                    <a href="https://membership-management-backend.onrender.com/api/admin/login" className="font-blue text-right absolute bottom-0"><u className="font-blue"> Admin Login </u></a>
                 </Components.Form>
               }
            </Components.SignInContainer>
