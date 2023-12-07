@@ -1,0 +1,74 @@
+.pagination-div{
+  padding: 2em 0 2em 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.page{
+  padding: 10px 15px;
+  border-collapse: collapse;
+}
+
+.currentPage{
+  background-color: burlywood;
+}
+
+.tiny-font{
+  font-size: 10px;
+}
+
+.font-red{
+  color: red;
+}
+
+.font-white{
+  color: antiquewhite;
+}
+
+.font-green {
+  color: green;
+}
+
+.main-div{
+  min-height: 82vh;
+  background-color: #1f2937;
+}
+
+body {
+  color: white;
+}
+
+/* google autofill background removal and change text color */
+input:-webkit-autofill,
+input:-webkit-autofill:focus {
+    transition: background-color 600000s 0s, color 600000s 0s;
+}
+
+input[data-autocompleted] {
+    background-color: transparent !important;
+    color: white 
+}
+
+/* used for file type input (selector for choose file button) */
+input::file-selector-button{
+  background-color: #111827 !important;
+  border-radius: 5px;
+  color: white;
+  border: none;
+  padding: 10px 10px;
+}
+
+.image-container{
+  background-image: url("/public/background-image.svg");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.blue {
+  background-color: blue !important;
+}
+
+.red{
+  background-color: red !important;
+}

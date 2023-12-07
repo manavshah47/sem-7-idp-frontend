@@ -1,0 +1,28 @@
+.header-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #0f3c69;
+    color: #fff;
+    padding: 10px;
+  }
+  
+  .icon-text {
+    display: flex;
+    align-items: center;
+  }
+  
+  .icon-text svg {
+    margin-right: 8px;
+  }
+  
+  header {
+    position: inherit;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #0f3c69;
+    color: #fff;
+    padding: 0.5rem;
+    /* margin-bottom: 10px; */
+  } 

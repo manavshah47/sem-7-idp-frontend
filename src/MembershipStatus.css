@@ -1,0 +1,116 @@
+/* MembershipStatus.css */
+
+/* Base styles for text */
+.text-black {
+    color: #000;
+    font-size: 16px;
+    margin: 5px 0;
+}
+
+/* Section titles */
+.section-title {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+/* Container for each section */
+.section {
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(34, 35, 36,20) 0px 0px 0px 1px;
+    /* margin-right: 20px; */
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+.section2 {
+    box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(34, 35, 36,20) 0px 0px 0px 1px;
+    padding: 15px;
+    border-radius: 5px;
+    margin-right: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    padding-left: 10px;
+}
+
+.section1 {
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(34, 35, 36,20) 0px 0px 0px 1px;
+    margin-right: 370px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left: 350px;
+}
+
+/* Style embedded documents */
+.embed-container {
+    display: flex;
+    justify-content: center;
+    margin: 15px 0;
+}
+
+.embed-container embed {
+    width: 100%;
+    max-width: 1000px;
+    height: auto;
+}
+
+/* Style form buttons */
+.submit-button {
+    background-color: #0f3c69;
+    color: white;
+    border: none;
+    border-radius: 30px;
+    padding: 10px 30px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+/* Checkbox and label */
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    margin: 10px 0;
+}
+
+.checkbox-label {
+    color: #1300B3;
+    margin-left: 10px;
+}
+
+.bold {
+    font-weight: bold;
+    background-color: lightgray;
+}
+
+.b{
+    font-weight: bold;
+}
+
+.view{
+    background-color:  #0f3c69;
+    color: #fff;
+    cursor: pointer;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-weight: bold;
+    border-radius: 10px;
+    font-size: 12px;
+    padding: 0px 10px 0px 10px;
+    height: 30px;
+}
+
+.label{
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #0f3c69;
+    /* padding-right: 100px; */
+}
+
+.showInput{
+    text-transform: uppercase;
+    color: #0f3c69;
+}
+
+/* Customize other specific elements as needed */
