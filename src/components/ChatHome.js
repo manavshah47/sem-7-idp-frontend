@@ -619,7 +619,7 @@ const ChatHome = ({ session, socket }) => {
             })}
           </div>
         }
-          <div className='inputMsg' style={{width:'107.8%', display:'flex', justifyContent:'space-evenly',  alignItems:'center', padding: "10px 10px 0px 10px"}}>
+          <div className='inputMsg' style={{ display:'flex', justifyContent:'space-evenly',  alignItems:'center', padding: "10px 10px 0px 10px"}}>
             <div style={{width:'10%', height:"60px"}} className='flex justify-center items-center'>
               <img
                 src='/images/attach.svg'
@@ -631,6 +631,7 @@ const ChatHome = ({ session, socket }) => {
                 <input 
                   ref={attachmentRef}
                   type="file"
+                  className="pad10"
                   onChange={onAttchmentChange}
                   style={{display:'none'}}
                 />
