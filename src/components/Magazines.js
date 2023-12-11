@@ -46,9 +46,9 @@ const Magazines = () => {
                     return (
                         <div className={index == 0 ? `carousel-item active`: `carousel-item`}  style={{cursor:'pointer',borderRight:'4px solid #0f3c69'}} data-bs-interval="4000" onClick={() => openMagazine(magazine)} >
                             {/* <div style={{cursor:'pointer', width:"300px", height:"300px", padding:'10px', backgroundColor:'blue'}}> */}
-                                <Document loading={<div className='flex justify-center items-center' style={{width:'100%', height:'100%'}}> <div style={{width:'300px', height:'300px', display:'flex', justifyContent:'center', alignItems:'center'}} > <CircleLoader/> </div> </div>} file={magazine.file}>
+                            {/* <Document loading={<div className='flex justify-center items-center' style={{width:'100%', height:'100%'}}> <div style={{width:'300px', height:'300px', display:'flex', justifyContent:'center', alignItems:'center'}} > <CircleLoader/> </div> </div>} file={magazine.file}>
                                     <Page pageNumber={1} />
-                                </Document>
+                                </Document> */}
                             {/* </div> */}
                             <div style={{flexDirection:"row"}}>
                             <p className='text-center' style={{color:'#0f3c69', zIndex:99, background:"white"}}><b>Magazine Name:  {magazine.name}</b></p>
