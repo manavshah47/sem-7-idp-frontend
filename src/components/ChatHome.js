@@ -638,9 +638,10 @@ const ChatHome = ({ session, socket }) => {
               </div>
             <div style={{width:'80%'}} className='flex justify-center items-center'>
               <input
-                className='chat-input'
+                className='chat-input pad-10'
                 placeholder="Type a message"
                 value={message}
+          
                 onChange={handleOnMessageChange}
                 onKeyDown={(e) => {
                   if (e.key === "Enter") {
