@@ -265,6 +265,13 @@ input {
 .inputMsg{
   box-shadow: rgba(0, 0, 0, 0.5) 0px 0.5px 20px;
   justify-items: flex-start;
+  width:68vw;
+  position: absolute; 
+  bottom: 0;
+}
+
+.pad10 {
+  padding: 10px;
 }
 
 .chat-input{
