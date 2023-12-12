@@ -1,7 +1,7 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 
-import { pdfjs, Document, Page } from 'react-pdf/renderer';
+import { pdfjs, Document, Page } from '@react-pdf/renderer';
 import CircleLoader from './CircleLoader';
 
 import { useNavigate } from 'react-router';
