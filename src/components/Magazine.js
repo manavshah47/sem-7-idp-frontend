@@ -3,7 +3,7 @@
 import { useLocation } from 'react-router';
 import CircleLoader from './CircleLoader';
 
-import { pdfjs, Document, Page } from 'react-pdf';
+import { pdfjs, Document, Page } from '@react-pdf/renderer';
 import { toast } from 'react-toastify';
 import { connect } from 'react-redux';
 import axios from 'axios';
