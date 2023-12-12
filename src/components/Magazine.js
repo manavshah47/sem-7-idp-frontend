@@ -8,10 +8,8 @@ import { toast } from 'react-toastify';
 import { connect } from 'react-redux';
 import axios from 'axios';
 
-pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-    'pdfjs-dist/build/pdf.worker.min.js',
-    import.meta.url,
-  ).toString();
+pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/legacy/build/pdf.worker.min.js`;
+
 
 const mapStateToProps = ({ session }) => ({
     session
