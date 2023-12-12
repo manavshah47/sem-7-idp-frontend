@@ -1,15 +1,15 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 
-import { pdfjs, Document, Page } from '@react-pdf/renderer';
+import { Document, Page } from '@react-pdf/renderer';
 import CircleLoader from './CircleLoader';
 
 import { useNavigate } from 'react-router';
 
-pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-    'pdfjs-dist/build/pdf.worker.min.js',
-    import.meta.url,
-  ).toString();
+// pdfjs.GlobalWorkerOptions.workerSrc = new URL(
+//     'pdfjs-dist/build/pdf.worker.min.js',
+//     import.meta.url,
+//   ).toString();
 
 const Magazines = () => {
     const navigate = useNavigate();
