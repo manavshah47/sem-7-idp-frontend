@@ -12,12 +12,12 @@ import AttachmentImage from './AttachmentImage';
 // import PDFViewer from 'pdf-viewer-reactjs'
 // import { PDFViewer } from 'react-view-pdf';
 
-import { pdfjs, Document, Page, Outline } from '@react-pdf/renderer';
+import { Document, Page, Outline } from '@react-pdf/renderer';
 
-pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-  'pdfjs-dist/build/pdf.worker.min.js',
-  import.meta.url,
-).toString();
+// pdfjs.GlobalWorkerOptions.workerSrc = new URL(
+//   'pdfjs-dist/build/pdf.worker.min.js',
+//   import.meta.url,
+// ).toString();
 
 
 const mapStateToProps = ({ session }) => ({
