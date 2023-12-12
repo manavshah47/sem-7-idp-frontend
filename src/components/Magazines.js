@@ -6,10 +6,8 @@ import CircleLoader from './CircleLoader';
 
 import { useNavigate } from 'react-router';
 
-pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-    'pdfjs-dist/build/pdf.worker.min.js',
-    import.meta.url,
-  ).toString();
+pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.js`;
+
 
 const Magazines = () => {
     const navigate = useNavigate();
