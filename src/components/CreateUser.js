@@ -22,7 +22,7 @@ const CreateUser = () => {
         name: "",
         phone: "",
         email: "",
-        department: "",
+        // department: "",
         typeOfUser:"",
         designation:""
     }
@@ -112,26 +112,26 @@ const CreateUser = () => {
                         {emailExists ? <p style={{color:"red",fontSize:'12px'}}>Mail Id is already taken</p>  : null}
                     </div>
                 </div>
-                <div className="form-group flex width-50" style={{marginBottom : '13px',marginTop : '5px'}}>
-                    <div className='width-10' style={{marginLeft:'50px'}}>
-                        <p className='label' style={{textAlign:'start'}}>Department :</p>
-                    </div>
-                    <div className='width-50' style={{marginLeft:'0px'}}>
-                    <select
-                        required
-                        style={{width: '207px', backgroundColor: '#eee', fontSize: '100%',paddingTop:8, paddingBottom:9, paddingRight:42, paddingLeft:18,marginRight :2,borderRadius:3,marginTop : 2,marginLeft:2}}
-                        name="department"
-                        id="department"
-                        value={values.department}
-                        onChange={handleChange}
-                    >
-                        <option value="" disabled selected>Select Department</option>
-                        <option value="hey">hey</option>
-                        <option value="by">by</option>
-                    </select>
-                    {(errors.department) ? <p style={{color:"red",fontSize:'11px'}}>{errors.department}</p>  : null}              
-                     </div>
-                </div>
+                // <div className="form-group flex width-50" style={{marginBottom : '13px',marginTop : '5px'}}>
+                //     <div className='width-10' style={{marginLeft:'50px'}}>
+                //         <p className='label' style={{textAlign:'start'}}>Department :</p>
+                //     </div>
+                //     <div className='width-50' style={{marginLeft:'0px'}}>
+                //     <select
+                //         required
+                //         style={{width: '207px', backgroundColor: '#eee', fontSize: '100%',paddingTop:8, paddingBottom:9, paddingRight:42, paddingLeft:18,marginRight :2,borderRadius:3,marginTop : 2,marginLeft:2}}
+                //         name="department"
+                //         id="department"
+                //         value={values.department}
+                //         onChange={handleChange}
+                //     >
+                //         <option value="" disabled selected>Select Department</option>
+                //         <option value="hey">hey</option>
+                //         <option value="by">by</option>
+                //     </select>
+                //     {(errors.department) ? <p style={{color:"red",fontSize:'11px'}}>{errors.department}</p>  : null}              
+                //      </div>
+                // </div>
                 <div className="form-group flex width-50" style={{marginTop : '5px'}} >
                     <div className='width-10' style={{marginLeft:'50px'}}>
                         <p className='label' style={{textAlign:'start'}}>Type :</p>
