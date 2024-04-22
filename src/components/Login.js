@@ -12,7 +12,7 @@ import axios from 'axios'
 
 // home component for all type of user
 
-import { logInUser } from "../actions/session";
+import { logInUser, loginCreatedUser } from "../actions/session";
 import { Header } from "./Header";
 import { Link } from "react-router-dom";
 import Loader from "./Loader";
@@ -22,16 +22,18 @@ const mapStateToProps = ({ session }) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  login: user => dispatch(logInUser(user))
+  login: user => dispatch(logInUser(user)),
+  loginCreatedUser: user => dispatch(loginCreatedUser(user))
 })
 
 let initialSubmit = false
 
-function Login({ login, session }) {
+function Login({ login, session, loginCreatedUser }) {
   const [signIn, toggle] = useState(true);
   const [ number, setNumber ] = useState("")
   const [otp, setOtp] = useState("")
   const [phone, setPhone] = useState("")
+  const [loginEmail, setLoginEmail] = useState("");
 
   const [firstName, setFirstName] = useState("")
   const [lastName, setLastName] = useState("")
@@ -48,6 +50,10 @@ function Login({ login, session }) {
   const openPage = () => {
     toggle(!signIn)
     setNumber("")
+    setLoginEmail("")
+    setEmail("")
+    setFirstName("")
+    setLastName("")
   }
 
   const [errors, setErrors] = useState({});
@@ -55,7 +61,9 @@ function Login({ login, session }) {
 
   const checkEmailAvailability = async () => {
     try {
-
+      if(email.length <= 1 || errors.email) {
+        return;
+      }
       const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/auth/check-email/${email}`);
       setEmailExists(response.data.exists);
     } catch (error) {
@@ -65,6 +73,9 @@ function Login({ login, session }) {
 
   const checkNumberAvailability = async () => {
     try {
+      if(number.length <= 1 || errors.number) {
+        return;
+      }
       const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/auth/check-phone/${number}`);
       setNumberExists(response.data.exists);
     } catch (error) {
@@ -85,9 +96,9 @@ function Login({ login, session }) {
     if(isValid && number != ""){
       const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/member/create-member`, { firstName, lastName, email, phone: number, otp }, { headers: {"Content-Type":"application/json"}})
       if(response.data.success){
+        console.log(response.data)
         toast(response.data.message)
-        toggle(!signIn)
-        setSignUpOTP(false)
+        loginCreatedUser(response.data.data);
       } else {
         toast(response.data.message)
       }
@@ -101,22 +112,12 @@ function Login({ login, session }) {
     e.preventDefault()
     setLoader(true)
     const user = {
-      id:phone,
+      id:loginEmail,
       password:otp
     }
     await login(user)
     setLoader(false)
   }
-
-  useEffect(() => {
-    checkNumberAvailability()
-  }, [number])
-
-  useEffect(() => {
-    checkEmailAvailability()
-  }, [email])
-
-
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -139,13 +140,16 @@ function Login({ login, session }) {
     e.preventDefault()
     setLoader(true)
     try {
-      if(emailExists || numberExists) {
-        toast("Enter unique emailId & phone number")
-        return;
+      let currentEmail = loginEmail;
+      let isCreateRequest = false;
+      if(!loginEmail) {
+        currentEmail = email;
+        isCreateRequest = true;
       }
-      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/member/send-email`, { email, firstName, lastName }, { headers: {"Content-Type":"application/json"}})
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/member/send-email`, { email:currentEmail, isCreateRequest }, { headers: {"Content-Type":"application/json"}})
       if(response.data.success){
         setSignUpOTP(true)
+        setShowOTP(true)
         toast(response.data.message)
       } else {
         toast(response.data.message, { position:'top-center' })
@@ -268,14 +272,28 @@ function Login({ login, session }) {
   useEffect(() => {
     if(initialSubmit){
         validateNumber()
-    }
+      }
+    }, [number])
+  
+  useEffect(() => {
+      checkNumberAvailability();
+  }, [errors.number])
+
+  useEffect(() => {
+    checkEmailAvailability();
+}, [errors.email])
+
+  useEffect(() => {
+    checkNumberAvailability();
   }, [number])
+
+  useEffect(() => {
+    checkEmailAvailability();
+  }, [email])
 
 
   useEffect(() => {
-    setTimeout(() => {
       initialSubmit = true
-    }, 0);
   }, [])
 
   if(loader){
@@ -334,11 +352,12 @@ function Login({ login, session }) {
                 <Components.Form>
                 <Components.Title style={{ color: '#0f3c69' }}>Sign In</Components.Title>
                     <div style={{ padding: '20px 10px' }}> 
-                    <Components.Input type='text' placeholder='Mobile Number' value={phone} onChange={(e) => setPhone(e.target.value)}  />
-                    {errors.phone && <p className="error-message"style={{color: 'red', fontSize: '12px'}}>{errors.phone}</p>}
+                    {/* <Components.Input type='text' placeholder='Mobile Number' value={phone} onChange={(e) => setPhone(e.target.value)}  /> */}
+                    <Components.Input type='email' placeholder='Email' value={loginEmail} onChange={(e) => setLoginEmail(e.target.value)} />
                     </div>
-                    <Components.Button onClick={handleSubmit}>Get OTP</Components.Button>
+                    <Components.Button onClick={sendEmail}>Get OTP</Components.Button>
                     <a href="https://membership-management-backend.onrender.com/api/admin/login" className="font-blue text-right absolute bottom-0"><u className="font-blue"> Admin Login </u></a>
+
                 </Components.Form>
               }
            </Components.SignInContainer>
