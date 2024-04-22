@@ -22,6 +22,11 @@ export const logInUser = user => async dispatch => {
     }
 };
 
+export const loginCreatedUser = user => async dispatch => {
+    console.log("user: ", user)
+    return dispatch(receiveCurrentUser(user))
+}
+
 export const logOutUser = () => async dispatch => {
     const response = await logout();
     if (response.data.success) {

@@ -140,7 +140,7 @@ function MemberDashboard({ session }) {
                                             </div>
                                             <div class="ml-2 w-full flex-1">
                                                 <div>
-                                                    <div class="mt-3 text-xl font-bold leading-8">{dataa.membership?.membershipStatus.toUpperCase()}</div>
+                                                    <div class="mt-3 text-xl font-bold leading-8">{dataa.membership?.membershipStatus.toUpperCase() || "-"}</div>
                                                     <div class="mt-1 text-base text-gray-600">Status</div>
                                                 </div>
                                             </div>
@@ -189,7 +189,7 @@ function MemberDashboard({ session }) {
                                             </div>
                                             <div class="ml-2 w-full flex-1">
                                                 <div>
-                                                    <div class="mt-3 text-xl font-bold leading-8">{dataa.membership?.membershipId || "--"}</div>
+                                                    <div class="mt-3 text-xl font-bold leading-8">{dataa.membership?.membershipId || "-"}</div>
                                                     <div class="mt-1 text-base text-gray-600">Membership ID</div>
                                                 </div>
                                             </div>
@@ -212,7 +212,7 @@ function MemberDashboard({ session }) {
                                             </div>
                                             <div class="ml-2 w-full flex-1">
                                                 <div>
-                                                    <div class="mt-3 text-xl font-bold leading-8">{dataa.bookings}</div>
+                                                    <div class="mt-3 text-xl font-bold leading-8">{dataa.bookings || "-"}</div>
                                                     <div class="mt-1 text-base text-gray-600">Booking</div>
                                                 </div>
                                             </div>
