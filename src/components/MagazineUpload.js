@@ -124,9 +124,6 @@ const MagazineUpload = ({ session }) => {
         if (!formData.magazineDate.trim()) {
             str = 'Magazine published date is required';
         }
-        if(formData.magazineDate < moment().format("YYYY-MM-DD")) {
-            str = "You cannot publish historical magazines"
-        }
 
         if(str == ''){
             setErrors(err => {

@@ -300,7 +300,7 @@ const MembershipStatus = ({ session }) => {
             
             {/* if current user is a member of the membership application, then showcase message accordingly */}
             {
-                ((data?.member?.phone == session.phone) && data.membershipStatus == "pending") && <h1 style={{backgroundColor:"#0f3c69" , padding:"10px 20px", fontWeight:"bold", width:"70%", margin:"50px auto", textAlign:'center'}}>{data?.membershipStatus == "pending" ? "Your membership application is currently in the processing stage at ERDA." : data?.approver?.message}</h1>
+                (data?.member?.phone == session.phone) && <h1 style={{backgroundColor:"#0f3c69" , padding:"10px 20px", fontWeight:"bold", width:"70%", margin:"50px auto", textAlign:'center'}}>{data?.membershipStatus == "pending" ? "Your membership application is currently in the processing stage at ERDA." : data?.approver?.message}</h1>
             }
 
             {
