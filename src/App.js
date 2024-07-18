@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { Suspense } from "react";
 
 import { Routes, Route } from "react-router-dom";
 
@@ -37,6 +37,7 @@ import MemberDashboard from "./components/MemberDashboard";
 import List from "./components/List";
 import MagazineDashboard from "./components/MagazineDashboard";
 import LabTable from "./components/LabTable";
+import Loader from "./components/Loader";
 
 const mapStateToProps = ({ session }) => ({
   session
@@ -63,6 +64,7 @@ function App({ session }) {
       <>
       <Navbar/>
       <div className="backImage">
+      <Suspense fallback={<Loader/>}>
         <Routes>
           <Route path="/profile" element={<Profile/>} />
           <Route path="/membership-form" element={<CompanyForm/>} />
@@ -75,6 +77,7 @@ function App({ session }) {
           <Route path="/chat" element={<ChatHome socket={socket} />}/>
           <Route path="/*" element={<MemberDashboard />}/>
       </Routes>
+      </Suspense>
       </div>
       <ToastContainer />
       </>
@@ -84,6 +87,7 @@ function App({ session }) {
         <>
         <Navbar/>
         <div className="backImage">
+        <Suspense fallback={<Loader/>}>
         <Routes>
           <Route path="/profile" element={<Profile/>} />
           <Route path="/create-employee" element={<CreateUser/>} />
@@ -95,6 +99,7 @@ function App({ session }) {
           <Route path="/lab-booking" element={<LabTable/>} />
           <Route path="/*" element={<Dashboard/>} />
         </Routes>
+        </Suspense>
         </div>
         <ToastContainer />
       </>
@@ -104,6 +109,7 @@ function App({ session }) {
       <>
         <Navbar/>
         <div className="backImage">
+        <Suspense fallback={<Loader/>}>
         <Routes>
           <Route path="/profile" element={<Profile/>} />
           <Route path="/upload-magazine" element={<MagazineUpload/>} />
@@ -112,6 +118,7 @@ function App({ session }) {
           <Route path="/lab-booking" element={<LabTable/>} />
           <Route path="/*" element={<MagazineDashboard/>} />
         </Routes>
+        </Suspense>
         </div>
         <ToastContainer />
       </>
@@ -121,6 +128,7 @@ function App({ session }) {
       <>
         <Navbar/>
         <div className="backImage">
+        <Suspense fallback={<Loader/>}>
         <Routes>
           <Route path="/profile" element={<Profile/>} />
           <Route path="/pending-memberships" element={<MembershipTable type="pending" />} />
@@ -128,6 +136,7 @@ function App({ session }) {
           <Route path="/membership-status" element={<MembershipStatus/>} />
           <Route path="/*" element={<EmployeeDashboard/>} />
         </Routes>
+        </Suspense>
         </div>
         <ToastContainer />
       </>
@@ -135,13 +144,14 @@ function App({ session }) {
   } else {
     return(
       <>
+      <Suspense fallback={<Loader/>}>
       <Routes>
         <Route path="/login" element={<CompanyLogin/>} />
         <Route path="/list" element={<List/>} />
         <Route path="/*" element={<Login/>} />
       </Routes>
+      </Suspense>
       <ToastContainer />
-      
     </>
    )
   }
