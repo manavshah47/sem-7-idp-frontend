@@ -1,10 +1,10 @@
 
 input {
-    color : #0f3c69;
+    color : #0f3c69 !important;
     background-color: #eee;
     border: 1px solid #0f3c69;
     padding: 12px 15px;
-    margin: 8px 0;
+    margin: 8px 0 !important;
     border-radius: 3px !important;
 
     /* width: 150px; */

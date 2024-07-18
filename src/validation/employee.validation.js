@@ -19,7 +19,6 @@ export const createEmployeeValidationSchema = Yup.object({
     phone: Yup.string().min(10).max(10).required(),
     name:Yup.string().min(3).max(30).required("Username cannot be empty"),
     typeOfUser:Yup.string().oneOf(["approver","magazine-manager"]).required(),
-    department:Yup.string().oneOf(["hey","by"]).required(),
     designation: Yup.string().oneOf(["manager","employee"]).required()
 })
 

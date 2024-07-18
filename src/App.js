@@ -50,7 +50,7 @@ function App({ session }) {
     const user = session
 
     // Create a socket connection with the provided URI and authentication
-    return socketio("http://localhost:3001/", {
+    return socketio("https://membership-management-backend.onrender.com/", {
       withCredentials: true,
       auth: { user },
     });
