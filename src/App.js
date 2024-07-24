@@ -1,5 +1,5 @@
 
-import React, { Suspense } from "react";
+import React, { Suspense, lazy } from "react";
 
 import { Routes, Route } from "react-router-dom";
 
@@ -12,32 +12,32 @@ import socketio from "socket.io-client";
 
 import './styles.css';
 
-// components import
-import Profile from "./components/Profile";
-import Login from "./components/Login";
-import Navbar from "./components/Navbar";
-import CompanyForm from "./components/CompanyForm";
-import CompanyForm2 from "./components/CompanyForm2";
-import Header from "./components/Header";
-import CompanyLogin from "./components/CompanyLogin";
-import CompanyForm3 from "./components/CompanyForm3";
-import MembershipStatus from "./components/MembershipStatus";
-import CreateUser from "./components/CreateUser";
-import MembershipTable from "./components/MembershipTable";
-import ChatHome from "./components/ChatHome";
-import ShowUser from "./components/ShowUser";
-import Dashboard from "./components/Dashboard";
-import EmployeeDashboard from "./components/EmployeeDashboard";
-import Booking from "./components/Booking";
-
-import MagazineUpload from "./components/MagazineUpload";
-import Magazines from "./components/Magazines";
-import Magazine from "./components/Magazine";
-import MemberDashboard from "./components/MemberDashboard";
-import List from "./components/List";
-import MagazineDashboard from "./components/MagazineDashboard";
-import LabTable from "./components/LabTable";
+import CompanyLogin from './components/CompanyLogin';
+import Login from './components/Login';
 import Loader from "./components/Loader";
+
+// components import
+const Profile = lazy(() => import("./components/Profile"));
+const Navbar = lazy(() => import("./components/Navbar"));
+const CompanyForm = lazy(() => import("./components/CompanyForm"));
+const CompanyForm2 = lazy(() => import("./components/CompanyForm2"));
+const CompanyForm3 = lazy(() => import("./components/CompanyForm3"));
+const MembershipStatus = lazy(() => import("./components/MembershipStatus"));
+const CreateUser = lazy(() => import("./components/CreateUser"));
+const MembershipTable = lazy(() => import("./components/MembershipTable"));
+const ChatHome = lazy(() => import("./components/ChatHome"));
+const ShowUser = lazy(() => import("./components/ShowUser"));
+const Dashboard = lazy(() => import("./components/Dashboard"));
+const EmployeeDashboard = lazy(() => import("./components/EmployeeDashboard"));
+const Booking = lazy(() => import("./components/Booking"));
+
+const MagazineUpload = lazy(() => import("./components/MagazineUpload"));
+const Magazines = lazy(() => import("./components/Magazines"));
+const Magazine = lazy(() => import("./components/Magazine"));
+const MemberDashboard = lazy(() => import("./components/MemberDashboard"));
+const MagazineDashboard = lazy(() => import("./components/MagazineDashboard"));
+const LabTable = lazy(() => import("./components/LabTable"));
+
 
 const mapStateToProps = ({ session }) => ({
   session
@@ -147,7 +147,6 @@ function App({ session }) {
       <Suspense fallback={<Loader/>}>
       <Routes>
         <Route path="/login" element={<CompanyLogin/>} />
-        <Route path="/list" element={<List/>} />
         <Route path="/*" element={<Login/>} />
       </Routes>
       </Suspense>
